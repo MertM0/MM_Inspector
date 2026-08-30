@@ -1,0 +1,24 @@
+{
+  "name": "com.mm.inspector",
+  "version": "0.1.0",
+  "displayName": "MM Inspector",
+  "description": "Attribute driven inspector for Unity. Stack attributes on a field, group them into boxes, tabs and foldouts, drive them from other members, and add your own with two files.",
+  "unity": "6000.0",
+  "documentationUrl": "https://github.com/MertM0/MM_Inspector",
+  "changelogUrl": "https://github.com/MertM0/MM_Inspector/blob/main/changelog.md",
+  "licensesUrl": "https://github.com/MertM0/MM_Inspector/blob/main/LICENSE.md",
+  "dependencies": {},
+  "keywords": [
+    "inspector",
+    "editor",
+    "attributes",
+    "property-drawer",
+    "imgui",
+    "workflow"
+  ],
+  "author": {
+    "name": "Mert Mutlu",
+    "email": "mertapsi@gmail.com",
+    "url": "https://github.com/MertM0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "MM.Inspector.Workflow.Editor",
+    "rootNamespace": "MM.Inspector.Workflow.Editor",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
