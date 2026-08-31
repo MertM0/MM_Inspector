@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `[ProgressBar]` works on `[ShowInInspector]` members. A member without a serialized field is
   drawn read only, so `Editable` has no effect there.
+- Fixed a nested serializable field's foldout arrow landing outside the surrounding group frame.
 
 ## [0.1.0] - 2026-08-30
 

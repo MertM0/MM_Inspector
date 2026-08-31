@@ -5,6 +5,8 @@ namespace MM.Inspector.Editor
 {
     public sealed class MMPropertyElement : MMElement
     {
+        private const float FoldoutArrowInset = 15f;
+
         private readonly MMProperty _property;
 
         public MMPropertyElement(MMProperty property)
@@ -29,6 +31,11 @@ namespace MM.Inspector.Editor
             if (_property.Serialized == null)
             {
                 return;
+            }
+
+            if (_property.Serialized.hasVisibleChildren && !_property.IsCollection)
+            {
+                position.xMin += FoldoutArrowInset;
             }
 
             using (new EditorGUI.DisabledScope(!_property.IsEnabled))
