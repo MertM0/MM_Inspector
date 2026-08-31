@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MM.Inspector.Editor
@@ -8,10 +9,10 @@ namespace MM.Inspector.Editor
 
         public static MMElement BuildElement(MMGroupNode node, MMPropertyTree tree)
         {
-            return BuildElement(node, tree, OwnerId(tree));
+            return BuildElement(node, tree.Find, OwnerId(tree));
         }
 
-        private static MMElement BuildElement(MMGroupNode node, MMPropertyTree tree, int ownerId)
+        public static MMElement BuildElement(MMGroupNode node, Func<string, MMProperty> lookup, int ownerId)
         {
             List<MMElement> children = new List<MMElement>();
             List<string> names = new List<string>();
@@ -20,12 +21,12 @@ namespace MM.Inspector.Editor
             {
                 if (item.IsGroup)
                 {
-                    children.Add(BuildElement(item.Group, tree, ownerId));
+                    children.Add(BuildElement(item.Group, lookup, ownerId));
                     names.Add(item.Group.Name);
                     continue;
                 }
 
-                MMProperty property = tree.Find(item.Member.Name);
+                MMProperty property = lookup(item.Member.Name);
                 if (property == null)
                 {
                     continue;
