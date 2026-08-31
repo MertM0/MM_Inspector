@@ -9,6 +9,8 @@ namespace MM.Inspector.Workflow.Editor
         private const string WindowType = "InspectorWindow";
         private const string EditorType = "PropertyEditor";
 
+        private static readonly Action<EditorWindow> _repaint = Repaint;
+
         public static bool MouseIsOver()
         {
             return Is(EditorWindow.mouseOverWindow);
@@ -26,15 +28,25 @@ namespace MM.Inspector.Workflow.Editor
 
         public static void Repaint()
         {
+            ForEach(_repaint);
+        }
+
+        public static void ForEach(Action<EditorWindow> action)
+        {
             EditorWindow[] windows = Resources.FindObjectsOfTypeAll<EditorWindow>();
 
             for (int i = 0; i < windows.Length; i++)
             {
                 if (Is(windows[i]))
                 {
-                    windows[i].Repaint();
+                    action(windows[i]);
                 }
             }
+        }
+
+        private static void Repaint(EditorWindow window)
+        {
+            window.Repaint();
         }
 
         private static bool Is(EditorWindow window)

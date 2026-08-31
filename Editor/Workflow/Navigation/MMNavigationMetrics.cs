@@ -32,10 +32,10 @@ namespace MM.Inspector.Workflow.Editor
             new MMIntSetting(Prefix + "PaddingRight", "Padding Right", 0, -10, 20);
 
         public static readonly MMIntSetting PaddingTop =
-            new MMIntSetting(Prefix + "PaddingTop", "Padding Top", 0, -10, 20);
+            new MMIntSetting(Prefix + "PaddingTop", "Padding Top", 2, -10, 20);
 
         public static readonly MMIntSetting PaddingBottom =
-            new MMIntSetting(Prefix + "PaddingBottom", "Padding Bottom", -4, -10, 20);
+            new MMIntSetting(Prefix + "PaddingBottom", "Padding Bottom", 2, -10, 20);
 
         public static readonly MMIntSetting SectionGap =
             new MMIntSetting(Prefix + "SectionGap", "Section Gap", 7, 0, 16);

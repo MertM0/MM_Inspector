@@ -3,39 +3,23 @@ using UnityEngine;
 
 namespace MM.Inspector.Workflow.Editor
 {
-    [InitializeOnLoad]
     public static class MMNavigationBar
     {
         private const float BorderWidth = 1f;
-        private const float PrefabOffset = 3f;
-
-        private static int _headerId;
-        private static float _headerOffset;
 
         private static readonly GUIContent _back = EditorGUIUtility.IconContent("tab_prev");
         private static readonly GUIContent _forward = EditorGUIUtility.IconContent("tab_next");
-        static MMNavigationBar()
-        {
-            UnityEditor.Editor.finishedDefaultHeaderGUI += OnHeaderGUI;
-            MMBookmarkStore.Changed += OnStoreChanged;
-        }
 
-        private static void OnHeaderGUI(UnityEditor.Editor editor)
+        public static void Draw()
         {
-            if (!MMWorkflowSettings.NavigationBar.Value || !IsPrimaryEditor(editor))
-            {
-                return;
-            }
-
-            float offset = HeaderOffset(editor.target);
-            Rect row = GUILayoutUtility.GetRect(0f, MMNavigationMetrics.RowHeight + offset, GUILayout.ExpandWidth(true));
+            Rect row = GUILayoutUtility.GetRect(0f, MMNavigationMetrics.RowHeight, GUILayout.ExpandWidth(true));
 
             if (Event.current.type == EventType.Layout)
             {
                 return;
             }
 
-            Rect content = Content(row, offset);
+            Rect content = Content(row);
 
             if (content.width <= 0f)
             {
@@ -59,42 +43,16 @@ namespace MM.Inspector.Workflow.Editor
             DrawDropHighlight(strip);
         }
 
-        private static Rect Content(Rect row, float offset)
+        private static Rect Content(Rect row)
         {
             float left = MMNavigationMetrics.PaddingLeft.Value;
             float right = MMNavigationMetrics.PaddingRight.Value;
 
             return new Rect(
                 row.x + left,
-                row.y + offset + MMNavigationMetrics.PaddingTop.Value,
+                row.y + MMNavigationMetrics.PaddingTop.Value,
                 row.width - left - right,
                 MMNavigationMetrics.BarHeight.Value);
-        }
-
-        private static float HeaderOffset(Object target)
-        {
-            if (target == null)
-            {
-                return 0f;
-            }
-
-            int id = target.GetInstanceID();
-
-            if (id != _headerId)
-            {
-                _headerId = id;
-                _headerOffset = PrefabUtility.GetPrefabInstanceStatus(target) == PrefabInstanceStatus.NotAPrefab
-                    ? 0f
-                    : 1f;
-            }
-
-            return _headerOffset * PrefabOffset;
-        }
-
-        private static bool IsPrimaryEditor(UnityEditor.Editor editor)
-        {
-            UnityEditor.Editor[] editors = ActiveEditorTracker.sharedTracker.activeEditors;
-            return editors.Length > 0 && editors[0] == editor;
         }
 
         private static void DrawHistory(Rect content, float button, ref float x)
@@ -133,12 +91,6 @@ namespace MM.Inspector.Workflow.Editor
             EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - BorderWidth, rect.width, BorderWidth), color);
             EditorGUI.DrawRect(new Rect(rect.x, rect.y, BorderWidth, rect.height), color);
             EditorGUI.DrawRect(new Rect(rect.xMax - BorderWidth, rect.y, BorderWidth, rect.height), color);
-        }
-
-        private static void OnStoreChanged()
-        {
-            MMBookmarkStrip.Invalidate();
-            MMInspectorWindows.Repaint();
         }
     }
 }

@@ -490,8 +490,9 @@ is reported once during setup as an error box above the field, never during draw
 engine. Delete the folder and the engine keeps working.
 
 - **Navigation bar.** Selection history (`Alt+Left` / `Alt+Right`) and a bookmark strip.
-  Drag objects from Hierarchy or Project onto the strip to bookmark them, drag inside it to
-  reorder. Single click selects, double click pings, right click opens the menu.
+  It sits at the top of the inspector window, above the object header, and stays there while
+  the inspector scrolls. Drag objects from Hierarchy or Project onto the strip to bookmark them,
+  drag inside it to reorder. Single click selects, double click pings, right click opens the menu.
 - **Shortcuts.** `Ctrl+Shift+E` collapse or expand every component, `Shift+E` collapse all
   but the hovered one, `A` toggle the hovered component, `Backspace` remove it,
   `Alt+1..9` jump to a bookmark.

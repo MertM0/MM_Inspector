@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the inspected object itself and were silently ignored anywhere deeper. Each instance keeps its
   own foldout and tab state, so sibling fields of one type do not move together.
 - Fixed a nested serializable field's foldout arrow landing outside the surrounding group frame.
+- The navigation bar is hosted by the inspector window instead of the object header. It stays put
+  while the inspector scrolls, sits above the object header, and appears for every selection.
+  ScriptableObjects, materials and prefab assets used to get no bar at all.
+- Collapsing components with `Ctrl+Shift+E` or `Shift+E` now sticks. The state was written only to
+  the editor tracker, which Unity rebuilds on every selection change, so components reopened by
+  themselves as soon as you came back to an object.
 
 ## [0.1.0] - 2026-08-30
 

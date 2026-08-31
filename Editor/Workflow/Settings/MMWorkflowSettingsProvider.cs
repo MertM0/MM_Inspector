@@ -70,7 +70,7 @@ namespace MM.Inspector.Workflow.Editor
                 ActiveEditorTracker.sharedTracker.ForceRebuild();
             }
 
-            MMInspectorWindows.Repaint();
+            MMNavigationHost.Sync();
         }
 
         private static void DrawNavigation()

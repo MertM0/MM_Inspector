@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace MM.Inspector.Workflow.Editor
@@ -30,11 +31,11 @@ namespace MM.Inspector.Workflow.Editor
                 }
             }
 
-            int visible = anyExpanded ? 0 : 1;
+            bool expanded = !anyExpanded;
 
             for (int i = 1; i < editors.Length; i++)
             {
-                tracker.SetVisible(i, visible);
+                SetExpanded(tracker, editors, i, expanded);
             }
 
             RepaintAll();
@@ -52,8 +53,7 @@ namespace MM.Inspector.Workflow.Editor
 
             for (int i = 1; i < editors.Length; i++)
             {
-                bool keep = editors[i] != null && editors[i].target == target;
-                tracker.SetVisible(i, keep ? 1 : 0);
+                SetExpanded(tracker, editors, i, editors[i] != null && editors[i].target == target);
             }
 
             RepaintAll();
@@ -102,6 +102,18 @@ namespace MM.Inspector.Workflow.Editor
 
             Undo.DestroyObjectImmediate(target);
             RepaintAll();
+        }
+
+        private static void SetExpanded(ActiveEditorTracker tracker, UnityEditor.Editor[] editors, int index, bool expanded)
+        {
+            tracker.SetVisible(index, expanded ? 1 : 0);
+
+            UnityEditor.Editor editor = editors[index];
+
+            if (editor != null && editor.target != null)
+            {
+                InternalEditorUtility.SetIsInspectorExpanded(editor.target, expanded);
+            }
         }
 
         private static void RepaintAll()
