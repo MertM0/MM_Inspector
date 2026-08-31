@@ -1,6 +1,6 @@
 {
   "name": "com.mm.inspector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "MM Inspector",
   "description": "Attribute driven inspector for Unity. Stack attributes on a field, group them into boxes, tabs and foldouts, drive them from other members, and add your own with two files.",
   "unity": "6000.0",

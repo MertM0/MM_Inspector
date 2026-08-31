@@ -45,11 +45,11 @@ namespace MM.Inspector.Editor
         {
             SerializedProperty serialized = _property.Serialized;
 
-            TryGetValue(serialized, out float value);
+            TryGetValue(out float value);
 
             float min = _bounds.GetMin(_property);
             float max = _bounds.GetMax(_property);
-            bool interactive = _editable && _property.IsEnabled;
+            bool interactive = _editable && _property.IsEnabled && serialized != null;
 
             if (!interactive && _editing)
             {
@@ -181,7 +181,7 @@ namespace MM.Inspector.Editor
 
                     if (current.clickCount >= 2)
                     {
-                        BeginEdit(serialized);
+                        BeginEdit();
                     }
                     else
                     {
@@ -215,9 +215,9 @@ namespace MM.Inspector.Editor
             }
         }
 
-        private void BeginEdit(SerializedProperty serialized)
+        private void BeginEdit()
         {
-            TryGetValue(serialized, out _valueBeforeEdit);
+            TryGetValue(out _valueBeforeEdit);
             _editing = true;
             _focusRequested = true;
             GUIUtility.hotControl = 0;
@@ -254,8 +254,26 @@ namespace MM.Inspector.Editor
             return Mathf.Lerp(min, max, normalized);
         }
 
-        private static bool TryGetValue(SerializedProperty serialized, out float value)
+        private bool TryGetValue(out float value)
         {
+            SerializedProperty serialized = _property.Serialized;
+
+            if (serialized == null)
+            {
+                switch (_property.GetValue())
+                {
+                    case int shownInt:
+                        value = shownInt;
+                        return true;
+                    case float shownFloat:
+                        value = shownFloat;
+                        return true;
+                    default:
+                        value = 0f;
+                        return false;
+                }
+            }
+
             switch (serialized.propertyType)
             {
                 case SerializedPropertyType.Integer:

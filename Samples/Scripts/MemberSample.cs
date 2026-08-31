@@ -31,6 +31,10 @@ namespace MM.Inspector.Samples
         [ShowInInspector]
         public int DoubledScore => score * 2;
 
+        [ShowInInspector]
+        [ProgressBar(0f, 100f, Color = MMColor.Green, Label = "Score")]
+        public int ScoreBar => score;
+
         [Title("Change callbacks")]
         [OnValueChanged(nameof(OnRadiusChanged))]
         public float radius = 1f;

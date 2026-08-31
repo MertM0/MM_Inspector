@@ -279,6 +279,15 @@ public Vector2 spawnDelay = new Vector2(20f, 80f);
 public int ammo = 12;
 ```
 
+Pairs with [ShowInInspector](#showininspector) to watch a runtime value. A member that has no
+serialized field behind it is drawn read only, so `Editable` has no effect there.
+
+```csharp
+[ShowInInspector]
+[ProgressBar(0f, nameof(MaxHealth), Color = MMColor.Red)]
+public int CurrentHealth { get; private set; }
+```
+
 ### Dropdown
 
 Takes any `IEnumerable` member. Use `DropdownList<T>` when the labels differ from the
