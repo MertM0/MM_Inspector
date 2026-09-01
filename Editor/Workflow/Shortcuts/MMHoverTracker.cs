@@ -7,7 +7,7 @@ namespace MM.Inspector.Workflow.Editor
     {
         private const float RowPadding = 3f;
 
-        private static int _hoveredId;
+        private static MMObjectId _hovered;
 
         public override int Order => -100;
 
@@ -17,12 +17,12 @@ namespace MM.Inspector.Workflow.Editor
         {
             get
             {
-                if (_hoveredId == 0 || !MMInspectorWindows.MouseIsOver())
+                if (_hovered == MMObjectId.None || !MMInspectorWindows.MouseIsOver())
                 {
                     return null;
                 }
 
-                return EditorUtility.EntityIdToObject(_hoveredId);
+                return _hovered.Resolve();
             }
         }
 
@@ -39,15 +39,15 @@ namespace MM.Inspector.Workflow.Editor
             }
 
             Rect row = new Rect(0f, rect.y - RowPadding, Screen.width, rect.height + RowPadding * 2f);
-            int id = targets[0].GetInstanceID();
+            MMObjectId id = MMObjectId.Of(targets[0]);
 
             if (row.Contains(Event.current.mousePosition))
             {
-                _hoveredId = id;
+                _hovered = id;
             }
-            else if (_hoveredId == id)
+            else if (_hovered == id)
             {
-                _hoveredId = 0;
+                _hovered = MMObjectId.None;
             }
 
             return false;

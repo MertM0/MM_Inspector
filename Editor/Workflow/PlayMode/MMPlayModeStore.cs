@@ -8,7 +8,7 @@ namespace MM.Inspector.Workflow.Editor
     public static class MMPlayModeStore
     {
         private static readonly List<MMPlayModeSnapshot> _snapshots = new List<MMPlayModeSnapshot>();
-        private static readonly HashSet<int> _ids = new HashSet<int>();
+        private static readonly HashSet<MMObjectId> _ids = new HashSet<MMObjectId>();
 
         static MMPlayModeStore()
         {
@@ -17,9 +17,9 @@ namespace MM.Inspector.Workflow.Editor
 
         public static int Count => _snapshots.Count;
 
-        public static bool Contains(int instanceId)
+        public static bool Contains(MMObjectId owner)
         {
-            return _ids.Contains(instanceId);
+            return _ids.Contains(owner);
         }
 
         public static void Add(MMPlayModeSnapshot snapshot)
@@ -31,7 +31,7 @@ namespace MM.Inspector.Workflow.Editor
 
             for (int i = 0; i < _snapshots.Count; i++)
             {
-                if (_snapshots[i].InstanceId != snapshot.InstanceId)
+                if (_snapshots[i].Owner != snapshot.Owner)
                 {
                     continue;
                 }
@@ -41,7 +41,7 @@ namespace MM.Inspector.Workflow.Editor
             }
 
             _snapshots.Add(snapshot);
-            _ids.Add(snapshot.InstanceId);
+            _ids.Add(snapshot.Owner);
         }
 
         public static void Save(Object target)
@@ -51,8 +51,8 @@ namespace MM.Inspector.Workflow.Editor
                 return;
             }
 
-            string id = GlobalObjectId.GetGlobalObjectIdSlow(target).ToString();
-            Add(new MMPlayModeSnapshot(target.GetInstanceID(), id, EditorJsonUtility.ToJson(target)));
+            string globalId = GlobalObjectId.GetGlobalObjectIdSlow(target).ToString();
+            Add(new MMPlayModeSnapshot(MMObjectId.Of(target), globalId, EditorJsonUtility.ToJson(target)));
         }
 
         public static void Clear()
@@ -81,7 +81,7 @@ namespace MM.Inspector.Workflow.Editor
         {
             GlobalObjectId parsed;
 
-            if (!GlobalObjectId.TryParse(snapshot.Id, out parsed))
+            if (!GlobalObjectId.TryParse(snapshot.GlobalId, out parsed))
             {
                 return false;
             }

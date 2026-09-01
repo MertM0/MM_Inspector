@@ -9,10 +9,10 @@ namespace MM.Inspector.Editor
 
         public static MMElement BuildElement(MMGroupNode node, MMPropertyTree tree)
         {
-            return BuildElement(node, tree.Find, OwnerId(tree));
+            return BuildElement(node, tree.Find, new MMObjectKey(tree.SerializedObject.targetObject));
         }
 
-        public static MMElement BuildElement(MMGroupNode node, Func<string, MMProperty> lookup, int ownerId)
+        public static MMElement BuildElement(MMGroupNode node, Func<string, MMProperty> lookup, MMObjectKey owner)
         {
             List<MMElement> children = new List<MMElement>();
             List<string> names = new List<string>();
@@ -21,7 +21,7 @@ namespace MM.Inspector.Editor
             {
                 if (item.IsGroup)
                 {
-                    children.Add(BuildElement(item.Group, lookup, ownerId));
+                    children.Add(BuildElement(item.Group, lookup, owner));
                     names.Add(item.Group.Name);
                     continue;
                 }
@@ -36,7 +36,7 @@ namespace MM.Inspector.Editor
                 names.Add(item.Member.Name);
             }
 
-            MMGroupContext context = new MMGroupContext(node, ownerId, children, names);
+            MMGroupContext context = new MMGroupContext(node, owner, children, names);
             MMElement element = CreateElement(context);
 
             foreach (MMElement child in children)
@@ -45,13 +45,6 @@ namespace MM.Inspector.Editor
             }
 
             return element;
-        }
-
-        private static int OwnerId(MMPropertyTree tree)
-        {
-            UnityEngine.Object target = tree.SerializedObject.targetObject;
-
-            return target == null ? 0 : target.GetInstanceID();
         }
 
         private static MMElement CreateElement(MMGroupContext context)

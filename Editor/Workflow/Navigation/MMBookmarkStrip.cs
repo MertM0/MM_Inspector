@@ -13,7 +13,7 @@ namespace MM.Inspector.Workflow.Editor
         private static float _scroll;
         private static string _hoveredId;
         private static int _activeIndex = -1;
-        private static int _activeInstanceId;
+        private static MMObjectId _activeId;
         private static bool _dirty = true;
         private static int _menuIndex = -1;
         private static Rect _menuRect;
@@ -61,8 +61,8 @@ namespace MM.Inspector.Workflow.Editor
         private static void TrackActive(IReadOnlyList<MMBookmarkItem> items, float width)
         {
             Object active = Selection.activeObject;
-            int id = active == null ? 0 : active.GetInstanceID();
-            bool selectionChanged = id != _activeInstanceId;
+            MMObjectId id = MMObjectId.Of(active);
+            bool selectionChanged = id != _activeId;
 
             if (!_dirty && !selectionChanged)
             {
@@ -70,7 +70,7 @@ namespace MM.Inspector.Workflow.Editor
             }
 
             _dirty = false;
-            _activeInstanceId = id;
+            _activeId = id;
             _activeIndex = IndexOf(items, active);
 
             if (selectionChanged && _activeIndex >= 0)

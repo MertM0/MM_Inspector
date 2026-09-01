@@ -4,7 +4,7 @@ namespace MM.Inspector.Workflow.Editor
 {
     public sealed class MMHistoryStack
     {
-        private readonly List<int> _entries = new List<int>();
+        private readonly List<ulong> _entries = new List<ulong>();
         private readonly int _capacity;
         private int _index = -1;
 
@@ -19,11 +19,11 @@ namespace MM.Inspector.Workflow.Editor
 
         public bool CanGoForward => _index >= 0 && _index < _entries.Count - 1;
 
-        public int Current => _index < 0 ? 0 : _entries[_index];
+        public ulong Current => _index < 0 ? 0ul : _entries[_index];
 
-        public void Push(int id)
+        public void Push(ulong id)
         {
-            if (id == 0)
+            if (id == 0ul)
             {
                 return;
             }
@@ -48,22 +48,22 @@ namespace MM.Inspector.Workflow.Editor
             _index = _entries.Count - 1;
         }
 
-        public int GoBack()
+        public ulong GoBack()
         {
             if (!CanGoBack)
             {
-                return 0;
+                return 0ul;
             }
 
             _index--;
             return _entries[_index];
         }
 
-        public int GoForward()
+        public ulong GoForward()
         {
             if (!CanGoForward)
             {
-                return 0;
+                return 0ul;
             }
 
             _index++;
@@ -102,9 +102,9 @@ namespace MM.Inspector.Workflow.Editor
 
             for (int i = 1; i < parts.Length; i++)
             {
-                int id;
+                ulong id;
 
-                if (int.TryParse(parts[i], out id))
+                if (ulong.TryParse(parts[i], out id))
                 {
                     stack._entries.Add(id);
                 }

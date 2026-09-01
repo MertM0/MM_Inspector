@@ -6,7 +6,7 @@ namespace MM.Inspector.Workflow.Editor
     [InitializeOnLoad]
     public static class MMSelectionHistory
     {
-        private const string StateKey = "MM_Inspector.Workflow.History";
+        private const string StateKey = "MM_Inspector.Workflow.History.2";
         private const int Capacity = 64;
 
         private static readonly MMHistoryStack _stack;
@@ -31,14 +31,14 @@ namespace MM.Inspector.Workflow.Editor
             Navigate(_stack.GoForward());
         }
 
-        private static void Navigate(int id)
+        private static void Navigate(ulong raw)
         {
-            if (id == 0)
+            if (raw == 0ul)
             {
                 return;
             }
 
-            Object target = EditorUtility.EntityIdToObject(id);
+            Object target = MMObjectId.FromRaw(raw).Resolve();
 
             if (target == null)
             {
@@ -58,7 +58,7 @@ namespace MM.Inspector.Workflow.Editor
                 return;
             }
 
-            _stack.Push(target.GetInstanceID());
+            _stack.Push(MMObjectId.Of(target).Raw);
             Persist();
         }
 

@@ -5,8 +5,7 @@ namespace MM.Inspector.Editor
     internal sealed class FoldoutGroupElement : MMHeaderGroupElement
     {
         private readonly string _title;
-        private readonly string _path;
-        private readonly int _ownerId;
+        private readonly string _key;
         private readonly bool _defaultExpanded;
 
         public FoldoutGroupElement(MMGroupContext context)
@@ -16,14 +15,13 @@ namespace MM.Inspector.Editor
                 ? MMReflection.ToDisplayName(context.Node.Name)
                 : context.Node.Title;
 
-            _path = context.Node.Path;
-            _ownerId = context.OwnerId;
+            _key = MMUiState.Key(MMUiState.GroupScope, context.Owner, context.Node.Path);
         }
 
         protected override bool IsExpanded
         {
-            get => MMUiState.GetExpanded(MMUiState.GroupScope, _ownerId, _path, _defaultExpanded);
-            set => MMUiState.SetExpanded(MMUiState.GroupScope, _ownerId, _path, value);
+            get => MMUiState.GetExpanded(_key, _defaultExpanded);
+            set => MMUiState.SetExpanded(_key, value);
         }
 
         protected override float HeaderHeight => MMGroupHeader.Height;

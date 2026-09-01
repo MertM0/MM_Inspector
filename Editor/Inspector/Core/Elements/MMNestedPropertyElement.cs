@@ -29,15 +29,14 @@ namespace MM.Inspector.Editor
             return MMGroupRegistry.BuildElement(
                 MMTypeSchema.Get(property.ValueType).Groups,
                 name => byName.TryGetValue(name, out MMProperty found) ? found : null,
-                OwnerId(property));
+                Owner(property));
         }
 
-        private static int OwnerId(MMProperty property)
+        private static MMObjectKey Owner(MMProperty property)
         {
             SerializedProperty serialized = property.Serialized;
-            UnityEngine.Object target = serialized.serializedObject.targetObject;
 
-            return (target == null ? 0 : target.GetInstanceID()) ^ serialized.propertyPath.GetHashCode();
+            return new MMObjectKey(serialized.serializedObject.targetObject, serialized.propertyPath);
         }
 
         public override bool IsVisible => _property.IsVisible;

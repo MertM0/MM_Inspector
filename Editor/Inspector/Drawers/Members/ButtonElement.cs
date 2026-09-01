@@ -19,8 +19,7 @@ namespace MM.Inspector.Editor
         private readonly ParameterInfo[] _parameters;
         private readonly GUIContent[] _parameterLabels;
         private readonly object[] _arguments;
-        private readonly int _stateOwner;
-        private readonly string _statePath;
+        private readonly string _key;
 
         private readonly bool _hasUnsupportedParameter;
 
@@ -53,10 +52,12 @@ namespace MM.Inspector.Editor
                 _hasUnsupportedParameter |= !MMValueField.Supports(parameter.ParameterType);
             }
 
-            _stateOwner = (property.Owner as UnityEngine.Object)?.GetInstanceID() ?? 0;
-            _statePath = property.Name;
-            _expanded = _parameters.Length == 0 ||
-                        MMUiState.GetExpanded(MMUiState.ButtonScope, _stateOwner, _statePath, true);
+            _key = MMUiState.Key(
+                MMUiState.ButtonScope,
+                new MMObjectKey(property.Owner as UnityEngine.Object),
+                property.Name);
+
+            _expanded = _parameters.Length == 0 || MMUiState.GetExpanded(_key, true);
         }
 
         public override bool IsVisible => _property.IsVisible;
@@ -134,7 +135,7 @@ namespace MM.Inspector.Editor
             }
 
             _expanded = expanded;
-            MMUiState.SetExpanded(MMUiState.ButtonScope, _stateOwner, _statePath, expanded);
+            MMUiState.SetExpanded(_key, expanded);
         }
 
         private static GUIStyle ArrowStyle

@@ -1,7 +1,11 @@
 # Changelog
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.1.2] - 2026-09-01
+
+- Builds on Unity 6000.0 through 6000.6. `Object.GetInstanceID()` became a compile error in
+  6000.5, replaced by the 64 bit `EntityId`.
+- Group, tab and button state no longer collides between two nested fields of the same type on
+  one object.
 
 ## [0.1.1] - 2026-08-31
 

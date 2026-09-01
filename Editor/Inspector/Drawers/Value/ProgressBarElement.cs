@@ -29,9 +29,9 @@ namespace MM.Inspector.Editor
             _label = label;
             _color = color;
             _editable = editable;
-            _controlName = "MMProgressBar:" +
-                           (property.Serialized?.serializedObject?.targetObject?.GetInstanceID() ?? 0) + ":" +
-                           property.Serialized?.propertyPath;
+            _controlName = "MMProgressBar:" + new MMObjectKey(
+                property.Serialized?.serializedObject?.targetObject,
+                property.Serialized?.propertyPath);
         }
 
         public override bool IsVisible => _property.IsVisible;

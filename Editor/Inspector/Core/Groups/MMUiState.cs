@@ -6,33 +6,33 @@ namespace MM.Inspector.Editor
     {
         public const string GroupScope = "Group";
         public const string ButtonScope = "Button";
+        public const string TabScope = "Tab";
 
         private const string Prefix = "MM_Inspector";
-        private const string TabScope = "Tab";
 
-        public static bool GetExpanded(string scope, int ownerId, string path, bool fallback)
+        public static string Key(string scope, MMObjectKey owner, string path)
         {
-            return SessionState.GetBool(Key(scope, ownerId, path), fallback);
+            return $"{Prefix}.{scope}.{owner}.{path}";
         }
 
-        public static void SetExpanded(string scope, int ownerId, string path, bool value)
+        public static bool GetExpanded(string key, bool fallback)
         {
-            SessionState.SetBool(Key(scope, ownerId, path), value);
+            return SessionState.GetBool(key, fallback);
         }
 
-        public static int GetTab(int ownerId, string path)
+        public static void SetExpanded(string key, bool value)
         {
-            return SessionState.GetInt(Key(TabScope, ownerId, path), 0);
+            SessionState.SetBool(key, value);
         }
 
-        public static void SetTab(int ownerId, string path, int value)
+        public static int GetTab(string key)
         {
-            SessionState.SetInt(Key(TabScope, ownerId, path), value);
+            return SessionState.GetInt(key, 0);
         }
 
-        private static string Key(string scope, int ownerId, string path)
+        public static void SetTab(string key, int value)
         {
-            return $"{Prefix}.{scope}.{ownerId}.{path}";
+            SessionState.SetInt(key, value);
         }
     }
 }

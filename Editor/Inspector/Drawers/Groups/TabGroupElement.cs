@@ -11,15 +11,13 @@ namespace MM.Inspector.Editor
         private static GUIStyle _last;
         private static GUIStyle _only;
 
-        private readonly string _path;
-        private readonly int _ownerId;
+        private readonly string _key;
         private readonly List<string> _names;
         private readonly List<int> _visible = new List<int>();
 
         public TabGroupElement(MMGroupContext context)
         {
-            _path = context.Node.Path;
-            _ownerId = context.OwnerId;
+            _key = MMUiState.Key(MMUiState.TabScope, context.Owner, context.Node.Path);
             _names = new List<string>(context.ChildNames);
         }
 
@@ -66,7 +64,7 @@ namespace MM.Inspector.Editor
 
                 if (picked && !selected)
                 {
-                    MMUiState.SetTab(_ownerId, _path, visible[i]);
+                    MMUiState.SetTab(_key, visible[i]);
                     MarkHeightDirty();
                 }
             }
@@ -157,7 +155,7 @@ namespace MM.Inspector.Editor
 
         private int ResolveSelection(List<int> visible)
         {
-            int stored = MMUiState.GetTab(_ownerId, _path);
+            int stored = MMUiState.GetTab(_key);
             int index = visible.IndexOf(stored);
 
             return index >= 0 ? index : 0;

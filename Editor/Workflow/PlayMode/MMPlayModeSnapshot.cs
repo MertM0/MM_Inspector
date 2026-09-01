@@ -2,16 +2,16 @@ namespace MM.Inspector.Workflow.Editor
 {
     public sealed class MMPlayModeSnapshot
     {
-        public MMPlayModeSnapshot(int instanceId, string id, string json)
+        public MMPlayModeSnapshot(MMObjectId owner, string globalId, string json)
         {
-            InstanceId = instanceId;
-            Id = id;
+            Owner = owner;
+            GlobalId = globalId;
             Json = json;
         }
 
-        public int InstanceId { get; }
+        public MMObjectId Owner { get; }
 
-        public string Id { get; }
+        public string GlobalId { get; }
 
         public string Json { get; }
     }
