@@ -70,10 +70,13 @@ namespace MM.Inspector.Editor
                     return false;
                 }
 
-                return IsCollection
-                    ? MMReflection.HasAnyMMAttribute(ElementType)
-                    : MMReflection.HasAnyMMAttribute(ValueType);
+                return DrawsNestedBody(IsCollection ? ElementType : ValueType);
             }
+        }
+
+        public static bool DrawsNestedBody(Type type)
+        {
+            return !MMReflection.IsUnityObject(type) && MMReflection.HasAnyMMAttribute(type);
         }
 
         public void InvalidateChildren()

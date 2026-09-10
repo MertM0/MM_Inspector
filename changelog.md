@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3] - 2026-09-10
+
+- Fixed a `UnityEngine.Object` reference field (component, asset) drawing as an empty foldout
+  instead of an object picker whenever the referenced type itself declared any MM attribute
+  anywhere in its members. Drag and drop and the picker were both unreachable. Object references
+  are now never drawn nested; only embedded `[System.Serializable]` types are.
+
 ## [0.1.2] - 2026-09-01
 
 - Builds on Unity 6000.0 through 6000.6. `Object.GetInstanceID()` became a compile error in

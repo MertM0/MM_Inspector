@@ -87,6 +87,11 @@ namespace MM.Inspector.Editor
             return found;
         }
 
+        public static bool IsUnityObject(Type type)
+        {
+            return type != null && typeof(UnityEngine.Object).IsAssignableFrom(type);
+        }
+
         public static string ToDisplayName(string memberName)
         {
             if (string.IsNullOrEmpty(memberName))
@@ -160,7 +165,7 @@ namespace MM.Inspector.Editor
                 return null;
             }
 
-            if (typeof(UnityEngine.Object).IsAssignableFrom(candidate))
+            if (IsUnityObject(candidate))
             {
                 return null;
             }
