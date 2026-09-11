@@ -9,6 +9,7 @@ namespace MM.Inspector.Workflow.Editor
         public const string NavigationBarKey = Prefix + "NavigationBar";
         public const string PlayModeSaveKey = Prefix + "PlayModeSave";
         public const string HideScriptFieldKey = Prefix + "HideScriptField";
+        public const string ClipboardKey = Prefix + "Clipboard";
 
         public static readonly MMBoolSetting NavigationBar =
             new MMBoolSetting(NavigationBarKey, "Navigation Bar", true);
@@ -19,11 +20,15 @@ namespace MM.Inspector.Workflow.Editor
         public static readonly MMBoolSetting HideScriptField =
             new MMBoolSetting(HideScriptFieldKey, "Hide Script Field", false);
 
+        public static readonly MMBoolSetting Clipboard =
+            new MMBoolSetting(ClipboardKey, "Clipboard", true);
+
         public static readonly IReadOnlyList<MMBoolSetting> Toggles = new[]
         {
             NavigationBar,
             PlayModeSave,
-            HideScriptField
+            HideScriptField,
+            Clipboard
         };
 
         public static void Reload()

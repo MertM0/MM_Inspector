@@ -1,7 +1,7 @@
 # MM Inspector
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)
 [![Unity](https://img.shields.io/badge/Unity-6000.0%2B-blue.svg)](https://unity.com/)
-[![version](https://img.shields.io/badge/version-0.1.0-blue.svg)](changelog.md)
+[![version](https://img.shields.io/badge/version-0.2.0-blue.svg)](changelog.md)
 
 _Attribute driven inspector for Unity_
 
@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
 - [FoldoutGroup](#groups)
 - [TabGroup](#groups)
 - [GroupSettings](#groupsettings)
+- [EndGroup](#groupsettings)
 
 </td>
 <td valign="top">
@@ -129,6 +130,11 @@ public class Player : MonoBehaviour
 - [LabelText](#labeltext-and-hidelabel)
 - [HideLabel](#labeltext-and-hidelabel)
 
+**References**
+- [InlineEditor](#inlineeditor)
+- [InlineProperty](#inlineproperty)
+- [Searchable](#searchable)
+
 **Debug**
 - [ShowDrawerChain](#showdrawerchain)
 
@@ -174,6 +180,24 @@ state; once a user toggles it, their choice wins for the rest of the session.
 [GroupSettings("Character", Title = "Character")]
 [GroupSettings("Character/Tabs/Stats/Details", Title = "Details", Expanded = true)]
 public class Player : MonoBehaviour { }
+```
+
+`Sticky` carries a group over to the fields that follow it, so only the first one needs the
+attribute. The run ends at `[EndGroup]`, at the next group attribute, or at the end of the type.
+The field carrying `[EndGroup]` is already outside. On a `[TabGroup]` the setting takes either the
+container path or the full `container/tab` path.
+
+```csharp
+[GroupSettings("Stats", Sticky = true)]
+public class Enemy : MonoBehaviour
+{
+    [BoxGroup("Stats")]
+    public int health;
+    public int armor;
+    [EndGroup]
+    
+    public string id;
+}
 ```
 
 ## Conditionals
@@ -425,6 +449,51 @@ public int renamed = 1;
 public string withoutLabel;
 ```
 
+## References
+
+### InlineEditor
+
+Draws the referenced object inside the field. A type that declares MM attributes is drawn by
+the engine, so its groups, conditions and buttons work; anything else embeds Unity's own editor.
+The body is built when you open the field and nesting stops after three levels.
+
+```csharp
+[InlineEditor]
+public WeaponData weapon;
+```
+
+### InlineProperty
+
+Draws a serializable type without its foldout. Pair it with `[HideLabel]` to drop the label row.
+
+```csharp
+[InlineProperty]
+public Range spawnRange;
+```
+
+### SerializeReference
+
+Unity's own attribute gets a type picker: pick the concrete type in the header row, and its
+members are drawn by the engine below. The list holds `[System.Serializable]` classes that derive
+from the field type and have a parameterless constructor; structs and the declared type itself are
+not on it.
+
+```csharp
+[SerializeReference]
+public Effect onHit;
+```
+
+## Searchable
+
+Put it on a class to get a search box above its fields. Typing filters the members, and groups
+with nothing left in them disappear. It works on an embedded `[System.Serializable]` type too, and
+it is enough on its own to hand the type to the engine.
+
+```csharp
+[Searchable]
+public class Enemy : MonoBehaviour { }
+```
+
 ## Debug
 
 ### ShowDrawerChain
@@ -494,8 +563,14 @@ engine. Delete the folder and the engine keeps working.
   the inspector scrolls. Drag objects from Hierarchy or Project onto the strip to bookmark them,
   drag inside it to reorder. Single click selects, double click pings, right click opens the menu.
 - **Shortcuts.** `Ctrl+Shift+E` collapse or expand every component, `Shift+E` collapse all
-  but the hovered one, `A` toggle the hovered component, `Backspace` remove it,
-  `Alt+1..9` jump to a bookmark.
+  but the hovered one, `Shift+M` minimal mode, `A` toggle the hovered component,
+  `Backspace` remove it, `Alt+1..9` jump to a bookmark.
+- **Minimal mode.** While it is on, opening a component collapses the others, so one stays open
+  at a time.
+- **Clipboard.** The copy icon in a component header marks it, and marked components are pasted
+  onto another object with the button under `Add Component`. A type the target already has is
+  overwritten instead of added twice. One paste is one undo step, and the marks are cleared
+  afterwards.
 - **Play mode save.** The icon in a component header marks it; its values are captured when you
   leave play mode and restored in edit mode. Click again to remove the mark.
 - **Script field.** Hides the `Script` row; the type icon in the header opens the file.

@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace MM.Inspector.Workflow.Editor
 {
-    public static class MMPlayModeCapture
+    public static class MMSnapshotCapture
     {
         private const string ScriptPropertyName = "m_Script";
 
-        public static MMPlayModeSnapshot Of(Object target)
+        public static MMComponentSnapshot Of(Object target)
         {
             if (target == null)
             {
                 return null;
             }
 
-            MMPlayModeSnapshot snapshot = new MMPlayModeSnapshot
+            MMComponentSnapshot snapshot = new MMComponentSnapshot
             {
                 Id = MMGlobalId.Of(target),
                 Json = EditorJsonUtility.ToJson(target)
@@ -24,7 +24,7 @@ namespace MM.Inspector.Workflow.Editor
             return snapshot;
         }
 
-        private static void CollectReferences(Object target, MMPlayModeSnapshot snapshot)
+        private static void CollectReferences(Object target, MMComponentSnapshot snapshot)
         {
             using (SerializedObject serialized = new SerializedObject(target))
             {

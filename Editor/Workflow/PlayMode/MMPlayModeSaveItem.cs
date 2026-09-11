@@ -3,58 +3,25 @@ using UnityEngine;
 
 namespace MM.Inspector.Workflow.Editor
 {
-    public sealed class MMPlayModeSaveItem : MMHeaderItem
+    public sealed class MMPlayModeSaveItem : MMMarkHeaderItem
     {
         private static readonly GUIContent _save = EditorGUIUtility.IconContent("SaveAs");
         private static readonly GUIContent _saved = EditorGUIUtility.IconContent("SaveActive");
-        private static readonly Color _savedTint = new Color(0.5f, 1f, 0.5f, 1f);
 
         public override int Order => 0;
 
         public override bool IsEnabled => MMWorkflowSettings.PlayModeSave.Value;
 
-        public override bool OnGUI(Rect rect, Object[] targets)
+        protected override MMObjectMarks Marks => MMMarks.PlayMode;
+
+        protected override GUIContent Icon(bool marked)
         {
-            if (!EditorApplication.isPlaying)
-            {
-                return false;
-            }
+            return marked ? _saved : _save;
+        }
 
-            if (!IsEnabled)
-            {
-                return false;
-            }
-
-            if (targets == null || targets.Length == 0 || targets[0] == null)
-            {
-                return false;
-            }
-
-            if (targets[0] is GameObject)
-            {
-                return false;
-            }
-
-            bool saved = MMPlayModeMarks.Contains(targets[0]);
-            Color previous = GUI.color;
-
-            if (saved)
-            {
-                GUI.color = _savedTint;
-            }
-
-            bool pressed = GUI.Button(rect, saved ? _saved : _save, GUIStyle.none);
-            GUI.color = previous;
-
-            if (pressed)
-            {
-                for (int i = 0; i < targets.Length; i++)
-                {
-                    MMPlayModeMarks.Toggle(targets[i]);
-                }
-            }
-
-            return true;
+        protected override bool Applies(Object target)
+        {
+            return EditorApplication.isPlaying && !(target is GameObject);
         }
     }
 }

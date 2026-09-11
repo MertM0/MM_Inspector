@@ -83,6 +83,12 @@ namespace MM.Inspector.Workflow.Editor
             MMComponentActions.CollapseAllExcept(MMHoverTracker.Hovered);
         }
 
+        [Shortcut("MM Inspector/Minimal Mode", KeyCode.M, ShortcutModifiers.Shift)]
+        private static void MinimalMode()
+        {
+            MMMinimalMode.Toggle();
+        }
+
         [Shortcut("MM Inspector/Toggle Component Enabled", KeyCode.A)]
         private static void ToggleEnabled()
         {

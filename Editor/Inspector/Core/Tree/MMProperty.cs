@@ -22,9 +22,17 @@ namespace MM.Inspector.Editor
 
         public bool IsVisible { get; private set; } = true;
         public bool IsEnabled { get; private set; } = true;
+        public bool MatchesSearch { get; set; } = true;
 
         public MMMemberKind Kind => Schema?.Kind ?? MMMemberKind.SerializedField;
-        public Type ValueType => _valueTypeOverride ?? Schema?.ValueType;
+        public Type DeclaredType => _valueTypeOverride ?? Schema?.ValueType;
+
+        public Type ValueType => ManagedType ?? DeclaredType;
+
+        private Type ManagedType =>
+            Serialized != null && Serialized.propertyType == SerializedPropertyType.ManagedReference
+                ? Serialized.managedReferenceValue?.GetType()
+                : null;
         public Type OwnerType => Owner?.GetType() ?? Schema?.DeclaringType;
 
         public MMProperty(
@@ -86,7 +94,7 @@ namespace MM.Inspector.Editor
 
         public void Refresh()
         {
-            IsVisible = MMVisibility.IsVisible(this);
+            IsVisible = MatchesSearch && MMVisibility.IsVisible(this);
             IsEnabled = !_forcedDisabled && MMVisibility.IsEnabled(this);
 
             if (_children == null)

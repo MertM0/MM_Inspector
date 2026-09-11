@@ -291,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7402b25ee5ee84cbff1e06c4720cfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MM.Inspector.Samples::MM.Inspector.Samples.ConditionalSample
-  showOptional: 1
+  showOptional: 0
   optionalValue: 1
   hiddenWhenShown: Visible while the toggle is off
   mode: 0
@@ -512,18 +512,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abb78e707b0e59f469ac7878c63bb5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: MM.Inspector.Samples::MM.Inspector.Samples.NestedSample
+  spawnRange:
+    min: 0
+    max: 10
+  falloff:
+    min: 0
+    max: 10
+  onHit:
+    rid: -2
+  tuning: {fileID: 145895601}
+  anchor: {fileID: 502563917}
   primary:
     weaponName: Sword
     ranged: 0
     range: 10
     icon: {fileID: 0}
     durability: 80
-  inventory: []
+  inventory:
+  - weaponName: 
+    ranged: 0
+    range: 0
+    icon: {fileID: 0}
+    durability: 0
   slots:
   - label: Head
     cost: 0
   - label: Chest
     cost: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &4072186708241757817
 GameObject:
   m_ObjectHideFlags: 0

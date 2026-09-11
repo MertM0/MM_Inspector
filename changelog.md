@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0] - 2026-09-11
+
+- `[InlineEditor]` draws a referenced object inside the field, `[InlineProperty]` drops a
+  serializable type's foldout.
+- `[SerializeReference]` fields get a type picker, and the chosen type's members are drawn by the
+  engine, attributes included.
+- `[Searchable]` puts a search box above a type's fields.
+- `[GroupSettings(Sticky = true)]` carries a group over to the fields that follow it; `[EndGroup]`
+  ends the run.
+- Workflow: component clipboard (copy icon plus a paste button under `Add Component`, switchable in
+  the settings) and minimal mode, toggled with `Shift+M`.
+
 ## [0.1.4] - 2026-09-11
 
 - `Hide Script Field` now works on every type the inspector draws, not only on types that declare

@@ -11,6 +11,8 @@ namespace MM.Inspector
 
         public bool Expanded { get; set; }
 
+        public bool Sticky { get; set; }
+
         public GroupSettingsAttribute(string path)
         {
             Path = path;

@@ -104,6 +104,11 @@ namespace MM.Inspector.Editor
 
         private static bool ScanForMMAttribute(Type type, HashSet<Type> visited, int depth)
         {
+            if (type.IsDefined(typeof(MMAttribute), true))
+            {
+                return true;
+            }
+
             foreach (FieldInfo field in GetAllFields(type))
             {
                 if (field.IsDefined(typeof(MMAttribute), true))

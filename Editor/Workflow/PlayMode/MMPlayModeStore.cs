@@ -25,11 +25,11 @@ namespace MM.Inspector.Workflow.Editor
         public static void Capture()
         {
             MMPlayModePayload payload = new MMPlayModePayload();
-            IReadOnlyList<string> ids = MMPlayModeMarks.Ids;
+            IReadOnlyList<string> ids = MMMarks.PlayMode.Ids;
 
             for (int i = 0; i < ids.Count; i++)
             {
-                MMPlayModeSnapshot snapshot = MMPlayModeCapture.Of(MMGlobalId.Resolve(ids[i]));
+                MMComponentSnapshot snapshot = MMSnapshotCapture.Of(MMGlobalId.Resolve(ids[i]));
 
                 if (snapshot != null)
                 {
@@ -47,7 +47,7 @@ namespace MM.Inspector.Workflow.Editor
 
             for (int i = 0; i < payload.Snapshots.Count; i++)
             {
-                if (MMPlayModeRestore.Apply(payload.Snapshots[i]))
+                if (MMSnapshotRestore.Apply(payload.Snapshots[i]))
                 {
                     restored++;
                 }

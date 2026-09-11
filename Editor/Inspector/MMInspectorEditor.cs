@@ -41,7 +41,11 @@ namespace MM.Inspector.Editor
             }
 
             MMTypeSchema schema = MMTypeSchema.Get(target.GetType());
-            _root.AddChild(MMGroupRegistry.BuildElement(schema.Groups, _tree));
+
+            _root.AddChild(MMSearchElement.Wrap(
+                schema.Type,
+                _tree.Members,
+                MMGroupRegistry.BuildElement(schema.Groups, _tree)));
 
             _root.Attach();
 

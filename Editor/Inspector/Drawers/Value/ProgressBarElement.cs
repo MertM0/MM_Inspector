@@ -8,8 +8,8 @@ namespace MM.Inspector.Editor
         private const float Border = 1f;
         private const string MixedText = "—";
 
-        private static GUIStyle _textStyle;
-        private static GUIStyle _fieldStyle;
+        private static readonly MMStyleCache Text = new MMStyleCache(BuildText);
+        private static readonly MMStyleCache Field = new MMStyleCache(BuildField);
 
         private readonly MMProperty _property;
         private readonly MMRangeBounds _bounds;
@@ -101,12 +101,12 @@ namespace MM.Inspector.Editor
         {
             if (_property.HasMixedValue)
             {
-                EditorGUI.LabelField(bar, MixedText, TextStyle);
+                EditorGUI.LabelField(bar, MixedText, Text.Style);
                 return;
             }
 
             string text = string.IsNullOrEmpty(_label) ? $"{value:0.##} / {max:0.##}" : _label;
-            EditorGUI.LabelField(bar, text, TextStyle);
+            EditorGUI.LabelField(bar, text, Text.Style);
         }
 
         private void DrawField(Rect bar, SerializedProperty serialized, float min, float max)
@@ -124,7 +124,7 @@ namespace MM.Inspector.Editor
 
             if (serialized.propertyType == SerializedPropertyType.Integer)
             {
-                int edited = EditorGUI.IntField(field, serialized.intValue, FieldStyle);
+                int edited = EditorGUI.IntField(field, serialized.intValue, Field.Style);
 
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -133,7 +133,7 @@ namespace MM.Inspector.Editor
             }
             else
             {
-                float edited = EditorGUI.FloatField(field, serialized.floatValue, FieldStyle);
+                float edited = EditorGUI.FloatField(field, serialized.floatValue, Field.Style);
 
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -288,38 +288,24 @@ namespace MM.Inspector.Editor
             }
         }
 
-        private static GUIStyle TextStyle
+        private static GUIStyle BuildText()
         {
-            get
+            GUIStyle style = new GUIStyle(EditorStyles.miniBoldLabel)
             {
-                if (_textStyle == null)
-                {
-                    _textStyle = new GUIStyle(EditorStyles.miniBoldLabel)
-                    {
-                        alignment = TextAnchor.MiddleCenter
-                    };
+                alignment = TextAnchor.MiddleCenter
+            };
 
-                    _textStyle.normal.textColor = MMSkin.Text;
-                }
+            style.normal.textColor = MMSkin.Text;
 
-                return _textStyle;
-            }
+            return style;
         }
 
-        private static GUIStyle FieldStyle
+        private static GUIStyle BuildField()
         {
-            get
+            return new GUIStyle(EditorStyles.numberField)
             {
-                if (_fieldStyle == null)
-                {
-                    _fieldStyle = new GUIStyle(EditorStyles.numberField)
-                    {
-                        alignment = TextAnchor.MiddleCenter
-                    };
-                }
-
-                return _fieldStyle;
-            }
+                alignment = TextAnchor.MiddleCenter
+            };
         }
     }
 }

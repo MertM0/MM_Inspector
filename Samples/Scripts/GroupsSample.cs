@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace MM.Inspector.Samples
 {
+    [Searchable]
     [GroupSettings("Character", Title = "Character")]
     [GroupSettings("Character/Tabs/Stats/Details", Title = "Details", Expanded = true)]
+    [GroupSettings("Debug", Sticky = true)]
     public class GroupsSample : MonoBehaviour
     {
         [BoxGroup("Character")]

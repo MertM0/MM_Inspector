@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 
 namespace MM.Inspector.Editor
 {
@@ -159,10 +160,21 @@ namespace MM.Inspector.Editor
                         return new MMListElement(property);
                     }
 
+                    if (IsManagedReference(property))
+                    {
+                        return new ManagedReferenceElement(property);
+                    }
+
                     return property.HasChildren
                         ? new MMNestedPropertyElement(property)
                         : new MMPropertyElement(property);
             }
+        }
+
+        private static bool IsManagedReference(MMProperty property)
+        {
+            return property.Serialized != null &&
+                   property.Serialized.propertyType == SerializedPropertyType.ManagedReference;
         }
 
         private static bool IsList(MMProperty property)

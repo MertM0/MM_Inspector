@@ -10,7 +10,7 @@ namespace MM.Inspector.Editor
         private const float ContentInset = 6f;
         private const float ArrowInset = 18f;
 
-        private static GUIStyle _background;
+        private static readonly MMStyleCache Background = new MMStyleCache(BuildBackground);
 
         public static void Draw(Rect rect, string label)
         {
@@ -26,11 +26,9 @@ namespace MM.Inspector.Editor
 
         public static void DrawBackground(Rect rect)
         {
-            EnsureStyle();
-
             if (Event.current.type == EventType.Repaint)
             {
-                _background.Draw(rect, false, false, false, false);
+                Background.Style.Draw(rect, false, false, false, false);
             }
         }
 
@@ -45,16 +43,11 @@ namespace MM.Inspector.Editor
                 height);
         }
 
-        private static void EnsureStyle()
+        private static GUIStyle BuildBackground()
         {
-            if (_background != null)
-            {
-                return;
-            }
-
             GUIStyle source = GUI.skin.FindStyle("RL Header") ?? EditorStyles.toolbar;
 
-            _background = new GUIStyle(source)
+            return new GUIStyle(source)
             {
                 fixedHeight = 0f,
                 stretchHeight = true

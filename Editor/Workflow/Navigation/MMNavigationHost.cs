@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,47 +10,17 @@ namespace MM.Inspector.Workflow.Editor
         private const string ElementName = "mm-navigation-bar";
         private const string ContainerClass = "unity-inspector-main-container";
 
-        private static readonly Action<EditorWindow> _refresh = Refresh;
-
-        private static int _windows;
-        private static int _ready;
+        private static readonly MMInspectorHost Host = new MMInspectorHost(Attach);
 
         static MMNavigationHost()
         {
-            EditorApplication.update += OnUpdate;
-            Selection.selectionChanged += OnChanged;
-            MMBookmarkResolver.Invalidated += OnChanged;
+            MMBookmarkResolver.Invalidated += Sync;
             MMBookmarkStore.Changed += OnStoreChanged;
         }
 
-        public static bool Sync()
+        private static void Sync()
         {
-            _windows = 0;
-            _ready = 0;
-
-            MMInspectorWindows.ForEach(_refresh);
-
-            return _windows > 0 && _windows == _ready;
-        }
-
-        private static void OnUpdate()
-        {
-            if (Sync())
-            {
-                EditorApplication.update -= OnUpdate;
-            }
-        }
-
-        private static void Refresh(EditorWindow window)
-        {
-            _windows++;
-
-            if (Attach(window))
-            {
-                _ready++;
-            }
-
-            window.Repaint();
+            Host.Sync();
         }
 
         private static bool Attach(EditorWindow window)
@@ -94,11 +63,6 @@ namespace MM.Inspector.Workflow.Editor
             {
                 bar.style.height = height;
             }
-        }
-
-        private static void OnChanged()
-        {
-            Sync();
         }
 
         private static void OnStoreChanged()

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,29 +13,7 @@ namespace MM.Inspector.Editor
         public MMNestedPropertyElement(MMProperty property)
         {
             _property = property;
-            AddChild(BuildBody(property));
-        }
-
-        private static MMElement BuildBody(MMProperty property)
-        {
-            Dictionary<string, MMProperty> byName = new Dictionary<string, MMProperty>();
-
-            foreach (MMProperty child in property.Children)
-            {
-                byName[child.Name] = child;
-            }
-
-            return MMGroupRegistry.BuildElement(
-                MMTypeSchema.Get(property.ValueType).Groups,
-                name => byName.TryGetValue(name, out MMProperty found) ? found : null,
-                Owner(property));
-        }
-
-        private static MMObjectKey Owner(MMProperty property)
-        {
-            SerializedProperty serialized = property.Serialized;
-
-            return new MMObjectKey(serialized.serializedObject.targetObject, serialized.propertyPath);
+            AddChild(MMNestedBody.For(property));
         }
 
         public override bool IsVisible => _property.IsVisible;
@@ -51,6 +28,7 @@ namespace MM.Inspector.Editor
             }
 
             float children = base.CalculateHeight(width - IndentWidth);
+
             return children <= 0f
                 ? header
                 : header + EditorGUIUtility.standardVerticalSpacing + children;

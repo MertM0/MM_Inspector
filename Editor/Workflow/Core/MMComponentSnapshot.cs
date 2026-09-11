@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace MM.Inspector.Workflow.Editor
 {
     [Serializable]
-    public sealed class MMPlayModeSnapshot
+    public sealed class MMComponentSnapshot
     {
         public string Id;
         public string Json;

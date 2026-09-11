@@ -6,10 +6,10 @@ namespace MM.Inspector.Editor
 {
     internal sealed class TabGroupElement : MMHeaderGroupElement
     {
-        private static GUIStyle _first;
-        private static GUIStyle _middle;
-        private static GUIStyle _last;
-        private static GUIStyle _only;
+        private static readonly MMStyleCache First = Centered("Tab first");
+        private static readonly MMStyleCache Middle = Centered("Tab middle");
+        private static readonly MMStyleCache Last = Centered("Tab last");
+        private static readonly MMStyleCache Only = Centered("Tab onlyOne");
 
         private readonly string _key;
         private readonly List<string> _names;
@@ -46,7 +46,6 @@ namespace MM.Inspector.Editor
                 return;
             }
 
-            EnsureStyles();
 
             int selection = ResolveSelection(visible);
             float width = rect.width / visible.Count;
@@ -74,40 +73,30 @@ namespace MM.Inspector.Editor
         {
             if (count == 1)
             {
-                return _only;
+                return Only.Style;
             }
 
             if (index == 0)
             {
-                return _first;
+                return First.Style;
             }
 
-            return index == count - 1 ? _last : _middle;
+            return (index == count - 1 ? Last : Middle).Style;
         }
 
-        private static void EnsureStyles()
+        private static MMStyleCache Centered(string name)
         {
-            if (_middle != null)
+            return new MMStyleCache(() =>
             {
-                return;
-            }
+                GUIStyle source = GUI.skin.FindStyle(name) ?? EditorStyles.miniButtonMid;
 
-            _first = Centered("Tab first");
-            _middle = Centered("Tab middle");
-            _last = Centered("Tab last");
-            _only = Centered("Tab onlyOne");
-        }
-
-        private static GUIStyle Centered(string name)
-        {
-            GUIStyle source = GUI.skin.FindStyle(name) ?? EditorStyles.miniButtonMid;
-
-            return new GUIStyle(source)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fixedHeight = 0f,
-                stretchHeight = true
-            };
+                return new GUIStyle(source)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    fixedHeight = 0f,
+                    stretchHeight = true
+                };
+            });
         }
 
         protected override float GetBodyHeight(float width)

@@ -11,7 +11,8 @@ namespace MM.Inspector.Editor
         private const float ArrowWidth = 13f;
         private const float ArrowGap = 4f;
 
-        private static GUIStyle _arrowStyle;
+        private static readonly MMStyleCache Arrow =
+            new MMStyleCache(() => GUI.skin.FindStyle("IN Foldout") ?? new GUIStyle(EditorStyles.foldout));
 
         private readonly MMProperty _property;
         private readonly MMActionResolver _resolver;
@@ -127,7 +128,7 @@ namespace MM.Inspector.Editor
 
         private void DrawArrow(Rect rect)
         {
-            bool expanded = GUI.Toggle(rect, _expanded, GUIContent.none, ArrowStyle);
+            bool expanded = GUI.Toggle(rect, _expanded, GUIContent.none, Arrow.Style);
 
             if (expanded == _expanded)
             {
@@ -136,19 +137,6 @@ namespace MM.Inspector.Editor
 
             _expanded = expanded;
             MMUiState.SetExpanded(_key, expanded);
-        }
-
-        private static GUIStyle ArrowStyle
-        {
-            get
-            {
-                if (_arrowStyle == null)
-                {
-                    _arrowStyle = GUI.skin.FindStyle("IN Foldout") ?? new GUIStyle(EditorStyles.foldout);
-                }
-
-                return _arrowStyle;
-            }
         }
 
         private void DrawArguments(Rect rect)

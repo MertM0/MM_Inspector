@@ -43,6 +43,9 @@ namespace MM.Inspector.Workflow.Editor
             MMBoolSetting playModeSave = MMWorkflowSettings.PlayModeSave;
             playModeSave.Value = EditorGUILayout.Toggle(playModeSave.Label, playModeSave.Value);
 
+            MMBoolSetting clipboard = MMWorkflowSettings.Clipboard;
+            clipboard.Value = EditorGUILayout.Toggle(clipboard.Label, clipboard.Value);
+
             MMBoolSetting hideScriptField = MMWorkflowSettings.HideScriptField;
             bool hide = EditorGUILayout.Toggle(hideScriptField.Label, hideScriptField.Value);
             bool rebuild = hide != hideScriptField.Value;
@@ -70,7 +73,7 @@ namespace MM.Inspector.Workflow.Editor
                 ActiveEditorTracker.sharedTracker.ForceRebuild();
             }
 
-            MMNavigationHost.Sync();
+            MMInspectorHost.SyncAll();
         }
 
         private static void DrawNavigation()

@@ -13,14 +13,22 @@ namespace MM.Inspector.Editor
                 return root;
             }
 
+            string sticky = null;
+
             for (int i = 0; i < members.Count; i++)
             {
                 MMMemberSchema member = members[i];
+
+                if (member.HasAttribute<EndGroupAttribute>())
+                {
+                    sticky = null;
+                }
+
                 List<GroupAttribute> groups = member.GetAttributes<GroupAttribute>();
 
                 if (groups.Count == 0)
                 {
-                    root.AddMember(member);
+                    Descend(root, sticky).AddMember(member);
                     continue;
                 }
 
@@ -37,6 +45,7 @@ namespace MM.Inspector.Editor
                 }
 
                 Descend(root, deepest.EffectivePath).AddMember(member);
+                sticky = IsSticky(deepest, settings) ? deepest.EffectivePath : null;
             }
 
             ApplySettings(root, settings);
@@ -56,6 +65,27 @@ namespace MM.Inspector.Editor
 
                 Descend(root, setting.Path).Apply(setting);
             }
+        }
+
+        private static bool IsSticky(GroupAttribute group, IReadOnlyList<GroupSettingsAttribute> settings)
+        {
+            if (settings == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < settings.Count; i++)
+            {
+                GroupSettingsAttribute setting = settings[i];
+
+                if (setting.Sticky &&
+                    (setting.Path == group.EffectivePath || setting.Path == group.DeclarationPath))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static int Depth(string path)

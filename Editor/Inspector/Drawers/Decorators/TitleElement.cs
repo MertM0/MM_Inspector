@@ -12,7 +12,8 @@ namespace MM.Inspector.Editor
         private readonly string _text;
         private readonly bool _line;
 
-        private static GUIStyle _style;
+        private static readonly MMStyleCache Style =
+            new MMStyleCache(() => new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold });
 
         public TitleElement(MMProperty property, MMElement inner, string text, bool line)
             : base(property, inner)
@@ -40,13 +41,11 @@ namespace MM.Inspector.Editor
 
         protected override void DrawDecoration(Rect rect)
         {
-            EnsureStyle();
-
             float y = rect.y + TopSpace;
 
             if (!string.IsNullOrEmpty(_text))
             {
-                EditorGUI.LabelField(new Rect(rect.x, y, rect.width, EditorGUIUtility.singleLineHeight), _text, _style);
+                EditorGUI.LabelField(new Rect(rect.x, y, rect.width, EditorGUIUtility.singleLineHeight), _text, Style.Style);
                 y += EditorGUIUtility.singleLineHeight;
             }
 
@@ -63,12 +62,5 @@ namespace MM.Inspector.Editor
             ? new Color(0.35f, 0.35f, 0.35f)
             : new Color(0.6f, 0.6f, 0.6f);
 
-        private static void EnsureStyle()
-        {
-            if (_style == null)
-            {
-                _style = new GUIStyle(EditorStyles.label) { fontStyle = FontStyle.Bold };
-            }
-        }
     }
 }

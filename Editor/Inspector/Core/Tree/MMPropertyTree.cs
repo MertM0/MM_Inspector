@@ -10,9 +10,11 @@ namespace MM.Inspector.Editor
 
         private readonly SerializedObject _serializedObject;
         private readonly List<MMProperty> _root = new List<MMProperty>();
+        private readonly List<MMProperty> _members = new List<MMProperty>();
         private readonly Dictionary<string, MMProperty> _byName = new Dictionary<string, MMProperty>();
 
         public IReadOnlyList<MMProperty> Root => _root;
+        public IReadOnlyList<MMProperty> Members => _members;
         public SerializedObject SerializedObject => _serializedObject;
 
         public MMPropertyTree(SerializedObject serializedObject)
@@ -75,6 +77,7 @@ namespace MM.Inspector.Editor
 
                 MMProperty node = new MMProperty(member, serialized, target, null);
                 _root.Add(node);
+                _members.Add(node);
                 _byName[member.Name] = node;
             }
         }
