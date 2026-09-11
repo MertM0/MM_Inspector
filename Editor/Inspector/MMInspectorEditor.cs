@@ -11,6 +11,7 @@ namespace MM.Inspector.Editor
         private const string HideScriptFieldKey = "MM_Inspector.Workflow.HideScriptField";
 
         private bool _engineEnabled;
+        private bool _hideScript;
         private float _width;
         private MMPropertyTree _tree;
         private MMContainerElement _root;
@@ -22,7 +23,9 @@ namespace MM.Inspector.Editor
                 return;
             }
 
+            _hideScript = EditorPrefs.GetBool(HideScriptFieldKey, false);
             _engineEnabled = MMReflection.HasAnyMMAttribute(target.GetType());
+
             if (!_engineEnabled)
             {
                 return;
@@ -32,7 +35,7 @@ namespace MM.Inspector.Editor
             _root = new MMContainerElement();
 
             MMProperty script = _tree.Find(ScriptPropertyName);
-            if (script != null && !EditorPrefs.GetBool(HideScriptFieldKey, false))
+            if (script != null && !_hideScript)
             {
                 _root.AddChild(new MMPropertyElement(script));
             }
@@ -56,7 +59,7 @@ namespace MM.Inspector.Editor
         {
             if (!_engineEnabled || _root == null)
             {
-                DrawDefaultInspector();
+                DrawFallback();
                 return;
             }
 
@@ -80,6 +83,19 @@ namespace MM.Inspector.Editor
             {
                 MMValidationState.Invalidate();
             }
+        }
+
+        private void DrawFallback()
+        {
+            if (!_hideScript)
+            {
+                DrawDefaultInspector();
+                return;
+            }
+
+            serializedObject.Update();
+            DrawPropertiesExcluding(serializedObject, ScriptPropertyName);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

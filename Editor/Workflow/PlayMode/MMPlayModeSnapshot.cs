@@ -1,18 +1,14 @@
+using System;
+using System.Collections.Generic;
+
 namespace MM.Inspector.Workflow.Editor
 {
+    [Serializable]
     public sealed class MMPlayModeSnapshot
     {
-        public MMPlayModeSnapshot(MMObjectId owner, string globalId, string json)
-        {
-            Owner = owner;
-            GlobalId = globalId;
-            Json = json;
-        }
-
-        public MMObjectId Owner { get; }
-
-        public string GlobalId { get; }
-
-        public string Json { get; }
+        public string Id;
+        public string Json;
+        public List<string> ReferencePaths = new List<string>();
+        public List<string> ReferenceIds = new List<string>();
     }
 }

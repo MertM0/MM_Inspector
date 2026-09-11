@@ -496,8 +496,8 @@ engine. Delete the folder and the engine keeps working.
 - **Shortcuts.** `Ctrl+Shift+E` collapse or expand every component, `Shift+E` collapse all
   but the hovered one, `A` toggle the hovered component, `Backspace` remove it,
   `Alt+1..9` jump to a bookmark.
-- **Play mode save.** The icon in a component header stores its values during play and
-  restores them when you leave play mode.
+- **Play mode save.** The icon in a component header marks it; its values are captured when you
+  leave play mode and restored in edit mode. Click again to remove the mark.
 - **Script field.** Hides the `Script` row; the type icon in the header opens the file.
 
 The settings are located under **Project Settings → MM Inspector → Workflow**. There are many customization options available.
@@ -510,6 +510,9 @@ The settings are located under **Project Settings → MM Inspector → Workflow*
 - **Collections are drawn by Unity.** `[ListDrawerSettings]` and `[TableList]` are not in
   this release. Attributes inside list elements do work.
 - **`[Button]` argument values are not serialized** and reset on domain reload.
+- **`Hide Script Field` skips types with their own `[CustomEditor]`**, which draw their own rows.
+- **Play mode save covers components that exist in edit mode.** Objects created at run time cannot
+  be marked, and a reference to one is cleared on restore.
 
 ## Credits
 

@@ -35,7 +35,7 @@ namespace MM.Inspector.Workflow.Editor
                 return false;
             }
 
-            bool saved = MMPlayModeStore.Contains(MMObjectId.Of(targets[0]));
+            bool saved = MMPlayModeMarks.Contains(targets[0]);
             Color previous = GUI.color;
 
             if (saved)
@@ -50,7 +50,7 @@ namespace MM.Inspector.Workflow.Editor
             {
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    MMPlayModeStore.Save(targets[i]);
+                    MMPlayModeMarks.Toggle(targets[i]);
                 }
             }
 

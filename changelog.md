@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4] - 2026-09-11
+
+- `Hide Script Field` now works on every type the inspector draws, not only on types that declare
+  MM attributes.
+- Play mode saving reworked. The icon marks a component and the values are captured when you leave
+  play mode, so edits made after clicking it are kept too. A second click removes the mark.
+- Saved values now survive on prefab instances, object references come back instead of turning into
+  dead ids, and marks are no longer lost when a script compiles during play mode.
+
 ## [0.1.3] - 2026-09-10
 
 - Fixed a `UnityEngine.Object` reference field (component, asset) drawing as an empty foldout
