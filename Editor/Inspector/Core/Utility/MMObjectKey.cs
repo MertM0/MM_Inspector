@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace MM.Inspector.Editor
@@ -22,6 +23,15 @@ namespace MM.Inspector.Editor
         public override string ToString()
         {
             return _value ?? None;
+        }
+
+        public static bool HasReferenceId(SerializedProperty property)
+        {
+#if UNITY_6000_4_OR_NEWER
+            return EntityId.ToULong(property.objectReferenceEntityIdValue) != 0;
+#else
+            return property.objectReferenceInstanceIDValue != 0;
+#endif
         }
 
         private static string Identify(Object target)

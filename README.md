@@ -1,7 +1,7 @@
 # MM Inspector
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)
 [![Unity](https://img.shields.io/badge/Unity-6000.0%2B-blue.svg)](https://unity.com/)
-[![version](https://img.shields.io/badge/version-0.2.0-blue.svg)](changelog.md)
+[![version](https://img.shields.io/badge/version-0.2.1-blue.svg)](changelog.md)
 
 _Attribute driven inspector for Unity_
 
@@ -111,6 +111,8 @@ public class Player : MonoBehaviour
 - [Scene](#pickers)
 - [SortingLayer](#pickers)
 - [AnimatorParam](#pickers)
+- [AnimatorState](#pickers)
+- [AnimatorClip](#pickers)
 - [AssetPreview](#pickers)
 - [FilePath](#pickers)
 - [FolderPath](#pickers)
@@ -346,8 +348,9 @@ public AnimationCurve fade = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
 ## Pickers
 
-Each picker accepts either the name or the id of what it selects. A stored value that no
-longer exists shows as `Missing: X` instead of silently resetting.
+Each picker accepts either the name or the id of what it selects; `[AnimatorClip]` also takes an
+`AnimationClip` reference. A stored value that no longer exists shows as `Missing: X` instead of
+silently resetting.
 
 ```csharp
 [Tag] public string singleTag;
@@ -362,6 +365,12 @@ public string anyParameter;
 
 [AnimatorParam(nameof(animator), AnimatorControllerParameterType.Trigger)]
 public string triggerParameter;
+
+[AnimatorState(nameof(animator))]
+public int rollHash;
+
+[AnimatorClip(nameof(animator))]
+public AnimationClip rollClip;
 
 [AssetPreview(96)]
 public Sprite icon;

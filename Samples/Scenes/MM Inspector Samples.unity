@@ -382,6 +382,10 @@ MonoBehaviour:
   animator: {fileID: 1459605524}
   anyParameter: 
   triggerParameter: 
+  stateByName: 
+  stateByHash: 0
+  clip: {fileID: 0}
+  clipByName: 
   icon: {fileID: 0}
   previewMaterial: {fileID: 0}
   configFile: 

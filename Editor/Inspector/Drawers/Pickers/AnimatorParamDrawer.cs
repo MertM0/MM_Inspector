@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace MM.Inspector.Editor
 {
     internal sealed class AnimatorParamDrawer : MMAttributeDrawer<AnimatorParamAttribute>
@@ -9,11 +11,10 @@ namespace MM.Inspector.Editor
 
         protected override MMElement CreateElement(MMProperty property, AnimatorParamAttribute attribute, MMElement next)
         {
-            MMValueResolver<UnityEngine.Animator> resolver = string.IsNullOrEmpty(attribute.AnimatorMember)
-                ? null
-                : MMValueResolver<UnityEngine.Animator>.Create(property.OwnerType, attribute.AnimatorMember);
+            AnimatorControllerParameterType filter = attribute.ParameterType;
 
-            return new AnimatorParamElement(property, resolver, attribute.ParameterType);
+            return new MMAnimatorPickerElement(property, attribute, "the controller has no matching parameter.",
+                (controller, options) => MMAnimatorCatalog.Parameters(controller, filter, options));
         }
     }
 }

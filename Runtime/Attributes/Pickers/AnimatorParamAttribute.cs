@@ -4,28 +4,29 @@ using UnityEngine;
 namespace MM.Inspector
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class AnimatorParamAttribute : MMAttribute
+    public sealed class AnimatorParamAttribute : MMAnimatorAttribute
     {
-        public string AnimatorMember { get; }
         public AnimatorControllerParameterType ParameterType { get; }
 
         public AnimatorParamAttribute()
+            : base(null)
         {
         }
 
         public AnimatorParamAttribute(string animatorMember)
+            : base(animatorMember)
         {
-            AnimatorMember = animatorMember;
         }
 
         public AnimatorParamAttribute(AnimatorControllerParameterType parameterType)
+            : base(null)
         {
             ParameterType = parameterType;
         }
 
         public AnimatorParamAttribute(string animatorMember, AnimatorControllerParameterType parameterType)
+            : base(animatorMember)
         {
-            AnimatorMember = animatorMember;
             ParameterType = parameterType;
         }
     }

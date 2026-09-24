@@ -16,6 +16,7 @@ namespace MM.Inspector.Editor
         private readonly List<object> _values = new List<object>();
 
         private string[] _options = Array.Empty<string>();
+        private string[] _withMissing;
         private bool _collected;
         private Type _pairType;
         private PropertyInfo _keyProperty;
@@ -63,7 +64,8 @@ namespace MM.Inspector.Editor
             {
                 EditorGUI.BeginChangeCheck();
 
-                int picked = MMPickerPopup.Draw(position, _property.Label, _options, selected, MMPickerPopup.Missing(Describe(current)));
+                int picked = MMPickerPopup.Draw(position, _property.Label, _options, selected,
+                    selected < 0 ? MMPickerPopup.Missing(Describe(current)) : null, ref _withMissing);
 
                 if (EditorGUI.EndChangeCheck() && picked >= 0)
                 {
@@ -108,8 +110,10 @@ namespace MM.Inspector.Editor
 
             for (int i = 0; i < _labels.Count; i++)
             {
-                _options[i] = _labels[i];
+                _options[i] = MMPickerPopup.Escape(_labels[i]);
             }
+
+            _withMissing = null;
         }
 
         private bool TryReadPair(object item, out string label, out object value)

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using UnityEditor;
 
@@ -11,20 +12,33 @@ namespace MM.Inspector.Editor
         {
             SerializedProperty serialized = property.Serialized;
 
+            return serialized == null || Accepts(serialized.propertyType, accepted)
+                ? null
+                : Name(attribute) + " needs " + Describe(accepted) + ".";
+        }
+
+        public static string TypesOrReference(MMProperty property, MMAttribute attribute, Type referenceType,
+            params SerializedPropertyType[] accepted)
+        {
+            SerializedProperty serialized = property.Serialized;
+
             if (serialized == null)
             {
                 return null;
             }
 
-            for (int i = 0; i < accepted.Length; i++)
-            {
-                if (serialized.propertyType == accepted[i])
-                {
-                    return null;
-                }
-            }
+            bool accepts = serialized.propertyType == SerializedPropertyType.ObjectReference
+                ? property.ValueType != null && referenceType.IsAssignableFrom(property.ValueType)
+                : Accepts(serialized.propertyType, accepted);
 
-            return Name(attribute) + " needs " + Describe(accepted) + ".";
+            return accepts
+                ? null
+                : Name(attribute) + " needs " + Describe(accepted) + " or " + Article(referenceType.Name) + " reference.";
+        }
+
+        private static bool Accepts(SerializedPropertyType type, SerializedPropertyType[] accepted)
+        {
+            return Array.IndexOf(accepted, type) >= 0;
         }
 
         public static string Name(MMAttribute attribute)

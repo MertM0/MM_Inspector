@@ -35,6 +35,18 @@ namespace MM.Inspector.Samples
         [AnimatorParam(nameof(animator), AnimatorControllerParameterType.Trigger)]
         public string triggerParameter;
 
+        [AnimatorState(nameof(animator))]
+        public string stateByName;
+
+        [AnimatorState(nameof(animator), Layer = 0)]
+        public int stateByHash;
+
+        [AnimatorClip(nameof(animator))]
+        public AnimationClip clip;
+
+        [AnimatorClip(nameof(animator))]
+        public string clipByName;
+
         [Title("Assets and paths")]
         [AssetPreview]
         public Sprite icon;

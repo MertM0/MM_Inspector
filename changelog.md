@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.2.1] - 2026-09-24
+
+- `[AnimatorState]` picks a state of the Animator's controller into a `string` (name) or `int`
+  (hash) field. `[AnimatorClip]` picks one of its clips into a `string` or `AnimationClip` field.
+- `[AnimatorParam]` also works with an Animator Override Controller.
+- Pickers on `string` and object fields always list `None` first, so a picked value can be cleared.
+  Animator pickers offer it on `int` fields too and write `0`.
+- Play mode saving works on prefab instances. Values and references captured in play mode were
+  not found again in edit mode and were silently dropped.
+- The play mode save mark is cleared after the values are restored instead of staying on for the
+  next play session.
+- A picker on an object field shows `Missing: <Type>` for a reference to a deleted asset instead of
+  `None`.
+- Attributes that read another member (`[Slider]`, `[ProgressBar]`, `[MinMaxSlider]`, `[Dropdown]`
+  and the Animator pickers) work on list and array elements. The member was looked up on the
+  element instead of on the component.
+- Pickers build their list only when its source changes instead of on every layout pass, and play
+  mode save and clipboard marks are no longer resolved again on every hierarchy change.
+- Custom pickers derived from `MMPickerElement` implement `TryGetSource` and `Collect` instead of
+  `TryBuildOptions`.
+
 ## [0.2.0] - 2026-09-11
 
 - `[InlineEditor]` draws a referenced object inside the field, `[InlineProperty]` drops a
