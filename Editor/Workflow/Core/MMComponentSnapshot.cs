@@ -8,6 +8,7 @@ namespace MM.Inspector.Workflow.Editor
     {
         public string Id;
         public string Json;
+        public bool FromPlayMode;
         public List<string> ReferencePaths = new List<string>();
         public List<string> ReferenceIds = new List<string>();
     }

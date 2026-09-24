@@ -17,7 +17,8 @@ namespace MM.Inspector.Workflow.Editor
             MMComponentSnapshot snapshot = new MMComponentSnapshot
             {
                 Id = MMGlobalId.Of(target),
-                Json = EditorJsonUtility.ToJson(target)
+                Json = EditorJsonUtility.ToJson(target),
+                FromPlayMode = EditorApplication.isPlaying
             };
 
             CollectReferences(target, snapshot);

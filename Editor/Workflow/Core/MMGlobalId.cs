@@ -19,14 +19,16 @@ namespace MM.Inspector.Workflow.Editor
             return id.identifierType == NullIdentifier ? null : id.ToString();
         }
 
-        public static Object Resolve(string id)
+        public static Object Resolve(string id, bool fromPlayMode = false)
         {
             if (string.IsNullOrEmpty(id) || !GlobalObjectId.TryParse(id, out GlobalObjectId parsed))
             {
                 return null;
             }
 
-            return GlobalObjectId.GlobalObjectIdentifierToObjectSlow(parsed);
+            Object resolved = GlobalObjectId.GlobalObjectIdentifierToObjectSlow(parsed);
+
+            return resolved != null || !fromPlayMode ? resolved : MMFlattenedIds.Find(parsed);
         }
     }
 }

@@ -45,15 +45,23 @@ namespace MM.Inspector.Workflow.Editor
             MMPlayModePayload payload = Load();
             int restored = 0;
 
-            for (int i = 0; i < payload.Snapshots.Count; i++)
+            try
             {
-                if (MMSnapshotRestore.Apply(payload.Snapshots[i]))
+                for (int i = 0; i < payload.Snapshots.Count; i++)
                 {
-                    restored++;
+                    if (MMSnapshotRestore.Apply(payload.Snapshots[i]))
+                    {
+                        restored++;
+                    }
                 }
+            }
+            finally
+            {
+                MMFlattenedIds.Release();
             }
 
             Clear();
+            MMMarks.PlayMode.Clear();
             return restored;
         }
 

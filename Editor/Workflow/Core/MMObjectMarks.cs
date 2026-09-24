@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MM.Inspector.Workflow.Editor
 {
@@ -20,7 +22,10 @@ namespace MM.Inspector.Workflow.Editor
             _key = key;
             _warning = warning;
 
-            EditorApplication.hierarchyChanged += InvalidateLive;
+            EditorSceneManager.sceneOpened += (scene, mode) => InvalidateLive();
+            SceneManager.sceneLoaded += (scene, mode) => InvalidateLive();
+            PrefabStage.prefabStageOpened += stage => InvalidateLive();
+            EditorApplication.playModeStateChanged += change => InvalidateLive();
         }
 
         public event System.Action Changed;

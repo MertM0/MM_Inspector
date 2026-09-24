@@ -16,7 +16,7 @@ namespace MM.Inspector.Workflow.Editor
                 return false;
             }
 
-            return Apply(MMGlobalId.Resolve(snapshot.Id), snapshot);
+            return Apply(MMGlobalId.Resolve(snapshot.Id, snapshot.FromPlayMode), snapshot);
         }
 
         public static bool Apply(Object target, MMComponentSnapshot snapshot)
@@ -57,21 +57,21 @@ namespace MM.Inspector.Workflow.Editor
                         continue;
                     }
 
-                    property.objectReferenceValue = Resolve(snapshot.ReferenceIds[i]);
+                    property.objectReferenceValue = Resolve(snapshot.ReferenceIds[i], snapshot.FromPlayMode);
                 }
 
                 serialized.ApplyModifiedPropertiesWithoutUndo();
             }
         }
 
-        private static Object Resolve(string id)
+        private static Object Resolve(string id, bool fromPlayMode)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return null;
             }
 
-            Object resolved = MMGlobalId.Resolve(id);
+            Object resolved = MMGlobalId.Resolve(id, fromPlayMode);
 
             if (resolved == null)
             {
