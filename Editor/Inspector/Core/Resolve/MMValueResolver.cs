@@ -84,7 +84,7 @@ namespace MM.Inspector.Editor
 
         public T GetValue(MMProperty property)
         {
-            return GetValue(property?.Owner);
+            return GetValue(property?.MemberOwner);
         }
 
         public T GetValue(object owner)

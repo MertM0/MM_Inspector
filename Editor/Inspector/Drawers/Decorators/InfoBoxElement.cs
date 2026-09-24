@@ -21,7 +21,7 @@ namespace MM.Inspector.Editor
 
             if (!string.IsNullOrEmpty(visibleIf))
             {
-                _visibleIf = MMValueResolver<bool>.Create(property.OwnerType, visibleIf);
+                _visibleIf = MMValueResolver<bool>.Create(property.MemberOwnerType, visibleIf);
             }
         }
 

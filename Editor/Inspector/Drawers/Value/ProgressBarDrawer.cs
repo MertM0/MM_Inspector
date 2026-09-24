@@ -21,7 +21,7 @@ namespace MM.Inspector.Editor
 
         protected override MMElement CreateElement(MMProperty property, ProgressBarAttribute attribute, MMElement next)
         {
-            MMRangeBounds bounds = new MMRangeBounds(attribute, property.OwnerType);
+            MMRangeBounds bounds = new MMRangeBounds(attribute, property.MemberOwnerType);
             return new ProgressBarElement(property, bounds, attribute.Label, attribute.Color, attribute.Editable);
         }
     }

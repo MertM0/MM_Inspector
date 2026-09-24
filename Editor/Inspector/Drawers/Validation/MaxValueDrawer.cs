@@ -15,7 +15,7 @@ namespace MM.Inspector.Editor
         protected override MMElement CreateElement(MMProperty property, MaxValueAttribute attribute, MMElement next)
         {
             return new NumericClampElement(
-                property, next, null, new MMBound(attribute.Value, attribute.Member, property.OwnerType));
+                property, next, null, new MMBound(attribute.Value, attribute.Member, property.MemberOwnerType));
         }
     }
 }

@@ -4,7 +4,7 @@ namespace MM.Inspector.Editor
     {
         protected override MMValidationResult Validate(MMProperty property, ValidateInputAttribute attribute)
         {
-            System.Type ownerType = property.OwnerType;
+            System.Type ownerType = property.MemberOwnerType;
             if (ownerType == null)
             {
                 return MMValidationResult.Valid;
@@ -16,7 +16,7 @@ namespace MM.Inspector.Editor
                 return MMValidationResult.Warning(resolver.ErrorMessage);
             }
 
-            if (resolver.GetValue(property.Owner))
+            if (resolver.GetValue(property.MemberOwner))
             {
                 return MMValidationResult.Valid;
             }

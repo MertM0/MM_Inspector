@@ -18,7 +18,7 @@ namespace MM.Inspector.Editor
                 return text;
             }
 
-            MMValueResolver<string> resolver = MMValueResolver<string>.Create(property.OwnerType, text);
+            MMValueResolver<string> resolver = MMValueResolver<string>.Create(property.MemberOwnerType, text);
 
             return resolver.HasError ? text : resolver.GetValue(property);
         }

@@ -12,7 +12,7 @@ namespace MM.Inspector.Editor
 
         protected override MMElement CreateElement(MMProperty property, SliderAttribute attribute, MMElement next)
         {
-            return new SliderElement(property, new MMRangeBounds(attribute, property.OwnerType));
+            return new SliderElement(property, new MMRangeBounds(attribute, property.MemberOwnerType));
         }
     }
 }

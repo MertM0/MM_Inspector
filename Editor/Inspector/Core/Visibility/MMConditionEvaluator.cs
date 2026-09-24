@@ -8,7 +8,7 @@ namespace MM.Inspector.Editor
         {
             resolved = true;
 
-            Type ownerType = property.OwnerType;
+            Type ownerType = property.MemberOwnerType;
             if (ownerType == null)
             {
                 resolved = false;
@@ -22,7 +22,7 @@ namespace MM.Inspector.Editor
                 return false;
             }
 
-            object value = resolver.GetValue(property.Owner);
+            object value = resolver.GetValue(property.MemberOwner);
 
             if (attribute.HasValue)
             {

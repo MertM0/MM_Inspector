@@ -6,7 +6,7 @@ namespace MM.Inspector.Editor
 
         protected override MMElement CreateElement(MMProperty property, OnValueChangedAttribute attribute, MMElement next)
         {
-            MMActionResolver resolver = MMActionResolver.Create(property.OwnerType, attribute.Method);
+            MMActionResolver resolver = MMActionResolver.Create(property.MemberOwnerType, attribute.Method);
             return new OnValueChangedElement(property, next, resolver);
         }
     }

@@ -4,7 +4,7 @@ namespace MM.Inspector.Editor
     {
         protected override MMElement CreateElement(MMProperty property, DropdownAttribute attribute, MMElement next)
         {
-            MMValueResolver<object> resolver = MMValueResolver<object>.Create(property.OwnerType, attribute.Source);
+            MMValueResolver<object> resolver = MMValueResolver<object>.Create(property.MemberOwnerType, attribute.Source);
             return new DropdownElement(property, resolver, attribute.Source);
         }
     }

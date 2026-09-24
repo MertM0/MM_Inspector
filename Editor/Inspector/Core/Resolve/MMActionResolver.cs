@@ -45,7 +45,7 @@ namespace MM.Inspector.Editor
 
         public void Invoke(MMProperty property)
         {
-            Invoke(property?.Owner);
+            Invoke(property?.MemberOwner);
         }
 
         public void Invoke(object owner)

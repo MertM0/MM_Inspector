@@ -35,6 +35,9 @@ namespace MM.Inspector.Editor
                 : null;
         public Type OwnerType => Owner?.GetType() ?? Schema?.DeclaringType;
 
+        public object MemberOwner { get; }
+        public Type MemberOwnerType { get; }
+
         public MMProperty(
             MMMemberSchema schema,
             SerializedProperty serialized,
@@ -52,6 +55,10 @@ namespace MM.Inspector.Editor
 
             Name = schema?.Name ?? serialized?.name ?? string.Empty;
             DisplayName = schema?.DisplayName ?? serialized?.displayName ?? Name;
+
+            bool element = IsCollectionElement;
+            MemberOwner = element ? parent.MemberOwner : owner;
+            MemberOwnerType = element ? parent.MemberOwnerType : OwnerType;
         }
 
         public IReadOnlyList<MMProperty> Children => _children ??= BuildChildren();
@@ -110,7 +117,7 @@ namespace MM.Inspector.Editor
 
         public void Modify(string label, Action change)
         {
-            UnityEngine.Object unityObject = Owner as UnityEngine.Object;
+            UnityEngine.Object unityObject = MemberOwner as UnityEngine.Object;
 
             Serialized?.serializedObject?.ApplyModifiedProperties();
 

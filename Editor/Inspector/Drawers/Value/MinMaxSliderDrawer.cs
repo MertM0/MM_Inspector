@@ -12,7 +12,7 @@ namespace MM.Inspector.Editor
 
         protected override MMElement CreateElement(MMProperty property, MinMaxSliderAttribute attribute, MMElement next)
         {
-            return new MinMaxSliderElement(property, new MMRangeBounds(attribute, property.OwnerType));
+            return new MinMaxSliderElement(property, new MMRangeBounds(attribute, property.MemberOwnerType));
         }
     }
 }
