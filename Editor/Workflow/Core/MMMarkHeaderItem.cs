@@ -39,11 +39,16 @@ namespace MM.Inspector.Workflow.Editor
             {
                 for (int i = 0; i < targets.Length; i++)
                 {
-                    Marks.Toggle(targets[i]);
+                    Toggle(targets[i]);
                 }
             }
 
             return true;
+        }
+
+        protected virtual void Toggle(Object target)
+        {
+            Marks.Toggle(target);
         }
     }
 }

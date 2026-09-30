@@ -22,5 +22,10 @@ namespace MM.Inspector.Workflow.Editor
         {
             return !EditorApplication.isPlaying && target is Component;
         }
+
+        protected override void Toggle(Object target)
+        {
+            MMClipboardStore.Toggle(target);
+        }
     }
 }

@@ -16,9 +16,9 @@ namespace MM.Inspector.Workflow.Editor
                 return 0;
             }
 
-            List<Component> sources = Sources();
+            IReadOnlyList<MMComponentSnapshot> snapshots = MMClipboardStore.Snapshots;
 
-            if (sources.Count == 0)
+            if (snapshots.Count == 0)
             {
                 return 0;
             }
@@ -28,14 +28,33 @@ namespace MM.Inspector.Workflow.Editor
 
             int group = Undo.GetCurrentGroup();
             int pasted = 0;
+            int overridden = 0;
 
-            for (int i = 0; i < sources.Count; i++)
+            for (int i = 0; i < snapshots.Count; i++)
             {
-                MMComponentSnapshot snapshot = MMSnapshotCapture.Of(sources[i]);
+                Component source = MMGlobalId.Resolve(snapshots[i].Id) as Component;
+
+                if (source == null)
+                {
+                    continue;
+                }
+
+                Type type = source.GetType();
 
                 for (int t = 0; t < targets.Length; t++)
                 {
-                    if (targets[t] != null && Apply(targets[t], sources[i].GetType(), snapshot))
+                    if (targets[t] == null)
+                    {
+                        continue;
+                    }
+
+                    Component component = targets[t].GetComponent(type);
+
+                    if (MMAnimationPreview.Overrides(component))
+                    {
+                        overridden++;
+                    }
+                    else if (Apply(targets[t], type, component, snapshots[i]))
                     {
                         pasted++;
                     }
@@ -43,39 +62,31 @@ namespace MM.Inspector.Workflow.Editor
             }
 
             Undo.CollapseUndoOperations(group);
-            MMMarks.Clipboard.Clear();
 
+            if (overridden > 0)
+            {
+                MMWorkflowLog.Warn(OverriddenWarning(overridden));
+                return pasted;
+            }
+
+            MMClipboardStore.Clear();
             return pasted;
         }
 
-        public static List<Component> Sources()
+        private static bool Apply(GameObject target, Type type, Component component, MMComponentSnapshot snapshot)
         {
-            List<Component> sources = new List<Component>();
-            IReadOnlyList<string> ids = MMMarks.Clipboard.Ids;
-
-            for (int i = 0; i < ids.Count; i++)
-            {
-                Component source = MMGlobalId.Resolve(ids[i]) as Component;
-
-                if (source != null)
-                {
-                    sources.Add(source);
-                }
-            }
-
-            return sources;
-        }
-
-        private static bool Apply(GameObject target, Type type, MMComponentSnapshot snapshot)
-        {
-            Component component = target.GetComponent(type);
-
             if (component == null)
             {
                 component = Undo.AddComponent(target, type);
             }
 
             return component != null && MMSnapshotRestore.Apply(component, snapshot);
+        }
+
+        private static string OverriddenWarning(int count)
+        {
+            return count + " component(s) were not pasted because the animation preview drives their values. " +
+                   "Turn on recording or leave the preview and paste again; the copy is kept.";
         }
     }
 }

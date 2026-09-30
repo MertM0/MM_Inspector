@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace MM.Inspector.Workflow.Editor
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
-        public static int Count => Load().Snapshots.Count;
+        public static int Count => MMSnapshotPayload.Load(StateKey).Snapshots.Count;
 
         public static void Clear()
         {
@@ -24,7 +23,7 @@ namespace MM.Inspector.Workflow.Editor
 
         public static void Capture()
         {
-            MMPlayModePayload payload = new MMPlayModePayload();
+            MMSnapshotPayload payload = new MMSnapshotPayload();
             IReadOnlyList<string> ids = MMMarks.PlayMode.Ids;
 
             for (int i = 0; i < ids.Count; i++)
@@ -37,12 +36,12 @@ namespace MM.Inspector.Workflow.Editor
                 }
             }
 
-            SessionState.SetString(StateKey, JsonUtility.ToJson(payload));
+            payload.Save(StateKey);
         }
 
         public static int Restore()
         {
-            MMPlayModePayload payload = Load();
+            MMSnapshotPayload payload = MMSnapshotPayload.Load(StateKey);
             int restored = 0;
 
             try
@@ -63,29 +62,6 @@ namespace MM.Inspector.Workflow.Editor
             Clear();
             MMMarks.PlayMode.Clear();
             return restored;
-        }
-
-        private static MMPlayModePayload Load()
-        {
-            string stored = SessionState.GetString(StateKey, string.Empty);
-
-            if (string.IsNullOrEmpty(stored))
-            {
-                return new MMPlayModePayload();
-            }
-
-            MMPlayModePayload payload;
-
-            try
-            {
-                payload = JsonUtility.FromJson<MMPlayModePayload>(stored);
-            }
-            catch (Exception)
-            {
-                payload = null;
-            }
-
-            return payload ?? new MMPlayModePayload();
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange change)

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2] - 2026-09-30
+
+- The clipboard takes a component's values when you click the copy icon instead of when you paste,
+  so a pose copied in the Animation or Timeline preview survives leaving the preview.
+- Pasting skips components whose values the animation preview drives unless the Animation window is
+  recording, and keeps the copy so it can be pasted again after the preview.
+
 ## [0.2.1] - 2026-09-24
 
 - `[AnimatorState]` picks a state of the Animator's controller into a `string` (name) or `int`

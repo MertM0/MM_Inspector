@@ -14,6 +14,11 @@ namespace MM.Inspector.Workflow.Editor
                 return;
             }
 
+            Warn(message);
+        }
+
+        public static void Warn(string message)
+        {
             Debug.LogWarning($"[MM_Inspector] {message}");
         }
     }
