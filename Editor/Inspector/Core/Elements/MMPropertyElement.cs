@@ -33,7 +33,7 @@ namespace MM.Inspector.Editor
                 return;
             }
 
-            if (_property.Serialized.hasVisibleChildren && !_property.IsCollection)
+            if (_property.Serialized.hasVisibleChildren)
             {
                 position.xMin += FoldoutArrowInset;
             }

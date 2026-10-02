@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.3] - 2026-10-02
+
+- The foldout arrow of an array or list whose element type has no MM attributes stays inside a
+  box group, tab or other framed group. It was drawn outside the frame's left edge.
+
 ## [0.2.2] - 2026-09-30
 
 - The clipboard takes a component's values when you click the copy icon instead of when you paste,

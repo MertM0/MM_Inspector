@@ -8,8 +8,19 @@ namespace MM.Inspector.Samples
     [GroupSettings("Debug", Sticky = true)]
     public class GroupsSample : MonoBehaviour
     {
+        [System.Serializable]
+        public class Drop
+        {
+            public string item = "Gold";
+
+            public int weight = 1;
+        }
+
         [BoxGroup("Character")]
         public string displayName = "Hero";
+
+        [BoxGroup("Character")]
+        public Transform[] spawnPoints;
 
         [TabGroup("Character/Tabs", "Stats")]
         public int level = 1;
@@ -28,7 +39,12 @@ namespace MM.Inspector.Samples
 
         [TabGroup("Character/Tabs", "Skills")]
         public float cooldown = 4f;
-        
+
+        [TabGroup("Character/Tabs", "Skills")]
+        public Drop[] drops = { new Drop() };
+
+        public Vector3[] waypoints;
+
         [HorizontalGroup("Loadout/Columns")]
         [VerticalGroup("Loadout/Columns/Left")]
         public string primary = "Sword";
