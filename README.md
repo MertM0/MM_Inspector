@@ -1,7 +1,7 @@
 # MM Inspector
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)
 [![Unity](https://img.shields.io/badge/Unity-6000.0%2B-blue.svg)](https://unity.com/)
-[![version](https://img.shields.io/badge/version-0.2.3-blue.svg)](changelog.md)
+[![version](https://img.shields.io/badge/version-0.2.4-blue.svg)](changelog.md)
 
 _Attribute driven inspector for Unity_
 
@@ -490,6 +490,18 @@ not on it.
 ```csharp
 [SerializeReference]
 public Effect onHit;
+```
+
+Lists and arrays get a picker on every element, and a new element starts as `None`. Unity
+serializes a `[SerializeReference]` list only when its base type is `[System.Serializable]`, even
+when the base is abstract.
+
+```csharp
+[System.Serializable]
+public abstract class Effect { }
+
+[SerializeReference]
+public List<Effect> effects = new List<Effect>();
 ```
 
 ## Searchable

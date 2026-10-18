@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace MM.Inspector.Editor
 {
@@ -179,7 +180,13 @@ namespace MM.Inspector.Editor
 
         private static bool IsList(MMProperty property)
         {
-            return property.IsCollection && (property.HasChildren || HasElementDrawers(property));
+            return property.IsCollection &&
+                   (property.HasChildren || HasElementDrawers(property) || HoldsManagedReferences(property));
+        }
+
+        private static bool HoldsManagedReferences(MMProperty property)
+        {
+            return property.Schema != null && property.Schema.Member.IsDefined(typeof(SerializeReference), false);
         }
 
         private static void WarnOnValueDrawerConflict(MMProperty property, List<(MMAttribute Attribute, MMDrawer Drawer)> matched)

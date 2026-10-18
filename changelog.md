@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.4] - 2026-10-18
+
+- `[SerializeReference]` lists and arrays get a type picker on every element. They were drawn by
+  Unity without one unless the base type carried MM attributes.
+- A type picked for a list element shows its members right away, and its conditions and buttons
+  run on the new instance instead of the one the element held before.
+- A `[SerializeReference]` element added with `+` starts as `None` instead of an undefined copy.
+- `[SortingLayer]` sees sorting layers added, renamed or removed in the editor session. New layers
+  showed as missing until the next domain reload.
+
 ## [0.2.3] - 2026-10-02
 
 - The foldout arrow of an array or list whose element type has no MM attributes stays inside a

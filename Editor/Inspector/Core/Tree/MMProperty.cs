@@ -10,6 +10,7 @@ namespace MM.Inspector.Editor
     {
         private readonly Type _valueTypeOverride;
         private readonly bool _forcedDisabled;
+        private readonly int _elementIndex;
         private List<MMProperty> _children;
         private GUIContent _label;
 
@@ -44,7 +45,8 @@ namespace MM.Inspector.Editor
             object owner,
             MMProperty parent,
             bool forcedDisabled = false,
-            Type valueTypeOverride = null)
+            Type valueTypeOverride = null,
+            int elementIndex = -1)
         {
             Schema = schema;
             Serialized = serialized;
@@ -52,6 +54,7 @@ namespace MM.Inspector.Editor
             Parent = parent;
             _forcedDisabled = forcedDisabled;
             _valueTypeOverride = valueTypeOverride;
+            _elementIndex = elementIndex;
 
             Name = schema?.Name ?? serialized?.name ?? string.Empty;
             DisplayName = schema?.DisplayName ?? serialized?.displayName ?? Name;
@@ -138,6 +141,11 @@ namespace MM.Inspector.Editor
 
         public object GetValue()
         {
+            if (_elementIndex >= 0)
+            {
+                return Parent.GetValue() is IList list && _elementIndex < list.Count ? list[_elementIndex] : null;
+            }
+
             return _valueTypeOverride != null ? Owner : Schema?.GetValue(Owner);
         }
 
@@ -190,7 +198,8 @@ namespace MM.Inspector.Editor
                     Serialized.GetArrayElementAtIndex(i),
                     elementOwner,
                     this,
-                    valueTypeOverride: elementType);
+                    valueTypeOverride: elementType,
+                    elementIndex: i);
 
                 node.Refresh();
                 children.Add(node);

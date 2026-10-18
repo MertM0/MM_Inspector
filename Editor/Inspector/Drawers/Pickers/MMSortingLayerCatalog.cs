@@ -5,34 +5,51 @@ namespace MM.Inspector.Editor
 {
     public static class MMSortingLayerCatalog
     {
-        private static readonly List<MMPickerOption> Options = new List<MMPickerOption>();
-
-        private static int _version = -1;
+        private static List<MMPickerOption> _options = new List<MMPickerOption>();
 
         public static IReadOnlyList<MMPickerOption> Layers
         {
             get
             {
-                Rebuild();
-                return Options;
+                SortingLayer[] layers = SortingLayer.layers;
+
+                if (!Matches(layers))
+                {
+                    _options = Build(layers);
+                }
+
+                return _options;
             }
         }
 
-        private static void Rebuild()
+        private static bool Matches(SortingLayer[] layers)
         {
-            if (_version == MMEditorDataVersion.Current)
+            if (layers.Length != _options.Count)
             {
-                return;
+                return false;
             }
 
-            _version = MMEditorDataVersion.Current;
-
-            Options.Clear();
-
-            foreach (SortingLayer layer in SortingLayer.layers)
+            for (int i = 0; i < layers.Length; i++)
             {
-                Options.Add(new MMPickerOption(layer.name, layer.id));
+                if (layers[i].id != _options[i].Id || layers[i].name != _options[i].Name)
+                {
+                    return false;
+                }
             }
+
+            return true;
+        }
+
+        private static List<MMPickerOption> Build(SortingLayer[] layers)
+        {
+            List<MMPickerOption> options = new List<MMPickerOption>(layers.Length);
+
+            foreach (SortingLayer layer in layers)
+            {
+                options.Add(new MMPickerOption(layer.name, layer.id));
+            }
+
+            return options;
         }
     }
 }

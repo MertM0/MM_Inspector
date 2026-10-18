@@ -102,8 +102,21 @@ namespace MM.Inspector.Editor
                 headerHeight = 0f,
                 elementHeightCallback = GetElementHeight,
                 drawElementCallback = DrawElement,
+                onAddCallback = OnAdd,
                 onChangedCallback = OnChanged
             };
+        }
+
+        private static void OnAdd(ReorderableList list)
+        {
+            ReorderableList.defaultBehaviours.DoAddButton(list);
+
+            SerializedProperty added = list.serializedProperty.GetArrayElementAtIndex(list.index);
+
+            if (added.propertyType == SerializedPropertyType.ManagedReference)
+            {
+                added.managedReferenceValue = null;
+            }
         }
 
         private void DrawHeader(Rect rect)

@@ -49,6 +49,7 @@ namespace MM.Inspector.Samples
         [HideLabel]
         public Bounds falloff = new Bounds();
 
+        [Serializable]
         public abstract class Effect
         {
         }
@@ -79,6 +80,9 @@ namespace MM.Inspector.Samples
 
         [SerializeReference]
         public Effect onHit;
+
+        [SerializeReference]
+        public List<Effect> effects = new List<Effect>();
 
         [InlineEditor]
         public ValueSample tuning;
